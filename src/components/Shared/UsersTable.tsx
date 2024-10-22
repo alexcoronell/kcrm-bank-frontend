@@ -19,7 +19,7 @@ import UserService from "../../core/services/user.service";
 
 import { formatDateTime } from "../../helpers/formatDate.helper";
 
-export function TableUsers() {
+export function UsersTable() {
   const [users, setUsers] = useState<User[]>([])
   useEffect(() => {
     const fetchData = async () => {

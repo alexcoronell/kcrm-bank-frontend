@@ -1,10 +1,10 @@
 import Page from "../components/layouts/Page";
-import { TableUsers } from "../components/Shared/TableUsers";
+import { UsersTable } from "../components/Shared/UsersTable";
 
 export default function UsersPage() {
   return (
     <Page titlePage="Usuarios">
-      <TableUsers />
+      <UsersTable />
     </Page>
   );
 }
