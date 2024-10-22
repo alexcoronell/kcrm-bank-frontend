@@ -5,12 +5,12 @@ import Header from "./components/Shared/Header";
 import Footer from "./components/Shared/Footer";
 
 /* Pages */
-import Login from "./pages/Login";
-import Main from "./pages/Main";
-import Sales from "./pages/Sales";
-import SalesForm from "./pages/SalesForm";
-import Users from "./pages/Users";
-import UsersForm from "./pages/UsersForm";
+import LoginPage from "./pages/LoginPage";
+import MainPage from "./pages/MainPage";
+import SalesPage from "./pages/SalesPage";
+import SalesFormPage from "./pages/SalesFormPage";
+import UsersPage from "./pages/UsersPage";
+import UsersFormPage from "./pages/UsersFormPage";
 
 import "./App.css";
 
@@ -19,14 +19,14 @@ function App() {
     <div className="min-h-screen p-0 flex flex-col items-center justify-between">
       <Header />
       <Router>
-        <Route path="/" component={Main} />
-        <Route path="/login" component={Login} />
-        <Route path="/sales" component={Sales} />
-        <Route path="/sales/detail" component={SalesForm} />
-        <Route path="/sales/create" component={SalesForm} />
-        <Route path="/users" component={Users} />
-        <Route path="/users/detail" component={UsersForm} />
-        <Route path="/users/create" component={UsersForm} />
+        <Route path="/" component={MainPage} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/sales" component={SalesPage} />
+        <Route path="/sales/detail" component={SalesFormPage} />
+        <Route path="/sales/create" component={SalesFormPage} />
+        <Route path="/users" component={UsersPage} />
+        <Route path="/users/create" component={UsersFormPage} />
+        <Route path="/users/detail" component={UsersFormPage} />
       </Router>
       <Footer />
     </div>
