@@ -1,3 +1,9 @@
+import Page from "../components/layouts/Page";
+import LoginForm from "../components/Shared/LoginForm";
 export default function LoginPage() {
-    return (<h4 className="Login">Login</h4>)
-};
+  return (
+    <Page titlePage="Ingresar">
+      <LoginForm />
+    </Page>
+  );
+}
