@@ -11,6 +11,8 @@ import SalesPage from "./pages/SalesPage";
 import SalesFormPage from "./pages/SalesFormPage";
 import UsersPage from "./pages/UsersPage";
 import UsersFormPage from "./pages/UsersFormPage";
+import UserTypePage from "./pages/UserTypePage";
+import UserTypeFormPage from "./pages/UserTypeFormPage";
 
 import "./App.css";
 
@@ -27,6 +29,9 @@ function App() {
         <Route path="/users" component={UsersPage} />
         <Route path="/users/create" component={UsersFormPage} />
         <Route path="/users/detail" component={UsersFormPage} />
+        <Route path="/user-types" component={UserTypePage} />
+        <Route path="/user-types/create" component={UserTypeFormPage} />
+        <Route path="/user-types/detail" component={UserTypeFormPage} />
       </Router>
       <Footer />
     </div>
