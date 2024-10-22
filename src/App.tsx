@@ -16,7 +16,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="min-h-screen p-0">
+    <div className="min-h-screen p-0 flex flex-col items-center justify-between">
       <Header />
       <Router>
         <Route path="/" component={Main} />
