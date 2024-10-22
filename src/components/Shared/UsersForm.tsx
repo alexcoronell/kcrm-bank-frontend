@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Label } from "../ui/Label";
 import { Input } from "../ui/Input";
 import {
@@ -10,12 +11,19 @@ import {
 import { Switch } from "../ui/Switch";
 import { Button } from "../ui/Button";
 
+import UserTypeService from "../../core/services/userType.service";
+import { UserType } from "../../core/interfaces/UserType.interface";
+
 export default function UsersForm() {
-  const userType = [
-    { id: 1, name: "Opcion 1" },
-    { id: 2, name: "Opcion 2" },
-    { id: 3, name: "Opcion 3" },
-  ];
+  const [userTypes, setUserTypes] = useState<UserType[]>([])
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await UserTypeService.getAll();
+      setUserTypes(await data as unknown as UserType[]);
+      console.log(userTypes);
+    };
+    fetchData().catch((e) => console.error(e));
+  }, []);
   return (
     <div className="UsersForm max-w-[800px] mx-auto">
       <form>
@@ -84,7 +92,7 @@ export default function UsersForm() {
               </SelectTrigger>{" "}
               <SelectContent>
                 {" "}
-                {userType.map((item) => (
+                {userTypes.map((item) => (
                   <SelectItem
                     key={item.id}
                     value={item.id as unknown as string}
