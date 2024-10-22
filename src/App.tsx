@@ -5,6 +5,8 @@ import Header from "./components/Shared/Header";
 import Footer from "./components/Shared/Footer";
 
 /* Pages */
+import FranchisesPage from "./pages/FranchisesPage";
+import FranchisesFormPage from "./pages/FranchisesFormPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import SalesPage from "./pages/SalesPage";
@@ -32,6 +34,9 @@ function App() {
         <Route path="/user-types" component={UserTypePage} />
         <Route path="/user-types/create" component={UserTypeFormPage} />
         <Route path="/user-types/detail" component={UserTypeFormPage} />
+        <Route path="/franchises" component={FranchisesPage} />
+        <Route path="/franchises/create" component={FranchisesFormPage} />
+        <Route path="/franchises/detail" component={FranchisesFormPage} />
       </Router>
       <Footer />
     </div>
