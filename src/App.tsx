@@ -1,8 +1,8 @@
 import { Router, Route } from "wouter";
 
 /* Components */
-import Header from "./components/header";
-import Footer from "./components/footer";
+import Header from "./components/Shared/Header";
+import Footer from "./components/Shared/Footer";
 
 /* Pages */
 import Login from "./pages/Login";
