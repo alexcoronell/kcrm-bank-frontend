@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    @apply bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+}
+
+.page {
+    @apply w-full max-w-[1200px];
+}
+
+.action-buttons {
+    @apply flex items-center justify-center gap-x-2;
+}
