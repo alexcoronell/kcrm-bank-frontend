@@ -1,3 +1,10 @@
+import Page from "../components/layouts/Page"
+import { FranchisesTable } from "../components/Shared/FranchisesTable";
+
 export default function FranchisesPage() {
-    return (<h4 className="Franchises">Franchises</h4>)
+    return (
+        <Page titlePage="Franquicias">
+          <FranchisesTable />
+        </Page>
+      );
 };
