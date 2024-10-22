@@ -9,4 +9,18 @@ export default class FranchiseService {
       console.error(e);
     }
   };
+
+  static save = async () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    try {
+      const data = fetch(url, {
+        method: "POST",
+        headers: myHeaders,
+      });
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  };
 }
