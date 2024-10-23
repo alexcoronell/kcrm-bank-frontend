@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 
 /* Components */
 import { Input } from "../ui/Input";
@@ -49,9 +50,8 @@ export default function FranchisesForm() {
       name,
     };
     setRequestStatus("loading");
-    const response: any = await FranchiseService.save(franquise);
-    console.log(await response);
-    if(response?.ok) {
+    const { ok } = await FranchiseService.save(franquise) as any;
+    if (ok) {
       setRequestStatus("success");
       setRequestMessage("Franquicia guardada correctamente");
     } else {
@@ -93,9 +93,11 @@ export default function FranchisesForm() {
           <Button type="submit" className="w-full">
             Guardar
           </Button>
-          <Button type="button" className="w-full" variant="light">
-            Limpiar
-          </Button>
+          <Link href="/franchises" className="w-full">
+            <Button type="button" className="w-full" variant="light">
+              Volver
+            </Button>
+          </Link>
         </div>
       </form>
       <RequestMessage

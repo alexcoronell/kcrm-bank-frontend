@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { RequestStatus } from "../../core/types/RequestStatus.type";
 
 interface Props {
@@ -8,7 +7,6 @@ interface Props {
 }
 
 export function RequestMessage({ status, message, showMessage }: Props) {
-  console.log(status);
   if (showMessage) {
     return (
       <div className="rounded-md overflow-hidden opacity-80">

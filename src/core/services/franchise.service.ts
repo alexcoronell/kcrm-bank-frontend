@@ -1,4 +1,4 @@
-const url = `${import.meta.env.VITE_API_URL}/franchises`;
+const url = `${import.meta.env.VITE_API_URL}/franchidses`;
 
 import { CreateFranchiseDto } from "../dtos/Franchise.dto";
 import { Franchise } from "../interfaces/Franchise.interface";
@@ -17,13 +17,16 @@ export default class FranchiseService {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     try {
-      const data = await fetch(url, {
+      const response = await fetch(url, {
         method: "POST",
         headers: myHeaders,
         body: JSON.stringify(dto),
       });
-      return await data.json();
+      const { status, ok } = await response;
+      const data = await response.json();
+      return { status, ok, data };
     } catch (e) {
+      console.log("***** error service *****", e);
       return e;
     }
   };
