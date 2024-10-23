@@ -49,17 +49,18 @@ export default function FranchisesForm() {
     const franquise: CreateFranchiseDto = {
       name,
     };
-    setRequestStatus("loading");
-    const { ok } = await FranchiseService.save(franquise) as any;
-    if (ok) {
+    try {
+      await FranchiseService.save(franquise);
       setRequestStatus("success");
       setRequestMessage("Franquicia guardada correctamente");
-    } else {
+      clean();
+    } catch (e) {
       setRequestStatus("failed");
       setRequestMessage("Franquicia no pudo ser guardada");
+    } finally {
+      setShowRequestMessage(true);
+      setTimeout(() => setShowRequestMessage(false), 2000);
     }
-    setShowRequestMessage(true);
-    setTimeout(() => setShowRequestMessage(false), 2000);
   };
   return (
     <div className="max-w-md mx-auto">

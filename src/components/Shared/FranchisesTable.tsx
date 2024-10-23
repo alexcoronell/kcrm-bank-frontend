@@ -35,9 +35,9 @@ export function FranchisesTable() {
   const fetchData = async () => {
     setRequestStatus("loading");
     try {
-      const data = await FranchiseService.getAll();
+      const { data } = await FranchiseService.getAll();
       setRequestStatus("success");
-      setFranchise(data as Franchise[]);
+      setFranchise(data);
     } catch (e) {
       setRequestStatus("failed");
       console.error(e);
@@ -45,8 +45,14 @@ export function FranchisesTable() {
   };
 
   const handleDelete = async (id: Franchise["id"]) => {
-    const response = await FranchiseService.delete(id);
-    fetchData();
+    try {
+      const response = await FranchiseService.delete(id);
+      fetchData();
+      console.log(response);
+    } catch (e) {
+      setRequestStatus("failed");
+      console.error(e);
+    }
   };
 
   return (
@@ -93,7 +99,8 @@ export function FranchisesTable() {
           </TableBody>
         )}
         {(franchises.length < 1 || franchises.length === undefined) &&
-          requestStatus !== "loading" && (
+          requestStatus !== "loading" &&
+          requestStatus !== "failed" && (
             <TableBody>
               <TableRow>
                 <TableCell colSpan={6} className="text-center">
