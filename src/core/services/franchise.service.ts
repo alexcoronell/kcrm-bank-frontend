@@ -2,16 +2,42 @@ import axios from "axios";
 
 const url = `${import.meta.env.VITE_API_URL}/franchises`;
 
-import { CreateFranchiseDto } from "../dtos/Franchise.dto";
+import { CreateFranchiseDto, UpdateFranchiseDto } from "../dtos/Franchise.dto";
 import { Franchise } from "../interfaces/Franchise.interface";
 
 export default class FranchiseService {
+  static save = async (dto: CreateFranchiseDto) => {
+    return await axios.post(url, dto, {
+      headers: { "Content-Type": "application/json" },
+    });
+  };
+
   static getAll = async () => {
     return await axios.get(url);
   };
 
-  static save = async (dto: CreateFranchiseDto) => {
-    return await axios.post(url, dto, {
+  static count = async () => {
+    return await axios.get(`${url}/count`);
+  };
+
+  static get = async (id: Franchise["id"]) => {
+    return await axios.get(`${url}/${id}`);
+  };
+
+  static update = async (id: Franchise["id"], dto: UpdateFranchiseDto) => {
+    return await axios.put(`${url}/${id}`, dto, {
+      headers: { "Content-Type": "application/json" },
+    });
+  };
+
+  static activate = async (id: Franchise["id"]) => {
+    return await axios.put(`${url}/activate/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    });
+  };
+
+  static deactivate = async (id: Franchise["id"]) => {
+    return await axios.put(`${url}/deactivate/${id}`, {
       headers: { "Content-Type": "application/json" },
     });
   };
