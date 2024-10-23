@@ -1,5 +1,5 @@
 import Page from "../components/layouts/Page";
-import SalesTable from "../components/Shared/SalesTable";
+import { SalesTable } from "../components/Shared/SalesTable";
 
 export default function UsersPage() {
   return (
