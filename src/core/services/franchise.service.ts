@@ -1,5 +1,7 @@
 const url = `${import.meta.env.VITE_API_URL}/franchises`;
 
+import { CreateFranchiseDto } from "../dtos/Franchise.dto";
+
 export default class FranchiseService {
   static getAll = async () => {
     try {
@@ -10,17 +12,18 @@ export default class FranchiseService {
     }
   };
 
-  static save = async () => {
+  static save = async (dto: CreateFranchiseDto) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     try {
-      const data = fetch(url, {
+      return await fetch(url, {
         method: "POST",
         headers: myHeaders,
+        body: JSON.stringify(dto),
       });
-      return data;
     } catch (e) {
-      console.error(e);
+      console.log("Error: ", e);
+      return e;
     }
   };
 }
