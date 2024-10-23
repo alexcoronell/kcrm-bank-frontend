@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 
 /* Components */
@@ -9,22 +9,65 @@ import { Button } from "../ui/Button";
 import { ErrorInputMessage } from "../ui/ErrorInputMessage";
 import { RequestMessage } from "../ui/RequestMessage";
 
+/* Interfaces */
+import { Franchise } from "../../core/interfaces/Franchise.interface";
+
 /* DTO's */
-import { CreateFranchiseDto } from "../../core/dtos/Franchise.dto";
+import {
+  CreateFranchiseDto,
+  UpdateFranchiseDto,
+} from "../../core/dtos/Franchise.dto";
 
 /* Types */
 import { RequestStatus } from "../../core/types/RequestStatus.type";
+import { StatusMode } from "../../core/types/StatusMode.type";
 
 /* Services */
 import FranchiseService from "../../core/services/franchise.service";
 
-export default function FranchisesForm() {
+interface Props {
+  id: Franchise["id"] | null;
+}
+
+export default function FranchisesForm({ id }: Props) {
+  const [statusMode, setStatusMode] = useState<StatusMode>("create");
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("failed");
   const [name, setName] = useState<string>("");
-  const [activate, setActivate] = useState<boolean>(false);
+  const [active, setActive] = useState<boolean>(false);
   const [errorName, setErrorName] = useState<boolean>(false);
   const [requestMessage, setRequestMessage] = useState<string>("");
   const [showRequestMessage, setShowRequestMessage] = useState<boolean>(false);
+
+  const get = async () => {
+    setRequestStatus("loading");
+    try {
+      const { data } = await FranchiseService.get(id as number);
+      const { name, active } = data;
+      setName(name);
+      setActive(active);
+      setRequestStatus("success");
+    } catch (err) {
+      setRequestStatus("failed");
+      const { status } = err as any;
+      if (status === 404) {
+        setRequestMessage("La Franquicia solicitada no existe");
+      } else if (status === 500) {
+        setRequestMessage(
+          "No se pudo descargar la información, intente más tarde"
+        );
+      }
+    } finally {
+      setShowRequestMessage(true);
+      setTimeout(() => setShowRequestMessage(false), 2000);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      get();
+      setStatusMode("detail");
+    }
+  }, [id]);
 
   const validateName = () => {
     if (name.length === 0) {
@@ -34,9 +77,21 @@ export default function FranchisesForm() {
     }
   };
 
+  const cancel = () => {
+    clean();
+    get();
+    setStatusMode("detail");
+  };
+
+  const changeEdit = () => {
+    setTimeout(() => {
+      setStatusMode("edit");
+    }, 50);
+  };
+
   const clean = () => {
     setErrorName(false);
-    setActivate(false);
+    setActive(false);
     setName("");
   };
 
@@ -44,16 +99,27 @@ export default function FranchisesForm() {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
+    console.log("ME EJECUTO**************");
     validateName();
-    if (errorName) return;
-    const franquise: CreateFranchiseDto = {
-      name,
-    };
+    if (errorName || statusMode === "detail") return;
     try {
-      await FranchiseService.save(franquise);
+      if (statusMode === "create") {
+        const franquise: CreateFranchiseDto = {
+          name,
+        };
+        await FranchiseService.save(franquise);
+        setRequestMessage("Franquicia guardada correctamente");
+        clean();
+      } else {
+        const franquise: UpdateFranchiseDto = {
+          name,
+          active,
+        };
+        await FranchiseService.update(id as number, franquise);
+        setRequestMessage("Franquicia actualizada correctamente");
+        setStatusMode("detail");
+      }
       setRequestStatus("success");
-      setRequestMessage("Franquicia guardada correctamente");
-      clean();
     } catch (e) {
       setRequestStatus("failed");
       setRequestMessage("Franquicia no pudo ser guardada");
@@ -75,6 +141,7 @@ export default function FranchisesForm() {
             type="text"
             value={name}
             disabled={requestStatus === "loading"}
+            readOnly={statusMode === "detail"}
             onChange={(e) => setName(e.target.value)}
             onBlur={validateName}
           />{" "}
@@ -84,21 +151,47 @@ export default function FranchisesForm() {
           />
         </div>
 
-        <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-          {" "}
-          <Switch id="activateUser" />{" "}
-          <Label htmlFor="activateUser">Activar / Desactivar Franquicia</Label>{" "}
-        </div>
+        {statusMode !== "create" && (
+          <div className="flex items-center justify-center gap-2 my-6 md:py-3">
+            {" "}
+            <Switch
+              id="activateUser"
+              checked={active}
+              onCheckedChange={setActive}
+              disabled={statusMode === "detail"}
+            />{" "}
+            <Label htmlFor="activateUser">
+              Activar / Desactivar Franquicia
+            </Label>{" "}
+          </div>
+        )}
 
-        <div className="mx-auto max-w-xs my-6 flex items-center justify-center gap-x-3">
-          <Button type="submit" className="w-full">
-            Guardar
-          </Button>
-          <Link href="/franchises" className="w-full">
-            <Button type="button" className="w-full" variant="light">
-              Volver
+        <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
+          {statusMode === "detail" ? (
+            <Button type="button" className="w-full" onClick={changeEdit}>
+              Editar
             </Button>
-          </Link>
+          ) : (
+            <Button type="submit" className="w-full">
+              Guardar
+            </Button>
+          )}
+          {statusMode === "edit" ? (
+            <Button
+              type="button"
+              className="w-full"
+              variant="light"
+              onClick={cancel}
+            >
+              Cancelar
+            </Button>
+          ) : (
+            <Link href="/franchises" className="w-full">
+              <Button type="button" className="w-full" variant="light">
+                Volver
+              </Button>
+            </Link>
+          )}
         </div>
       </form>
       <RequestMessage

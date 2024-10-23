@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "wouter";
 import {
   Table,
   TableBody,
@@ -48,7 +49,6 @@ export function FranchisesTable() {
     try {
       const response = await FranchiseService.delete(id);
       fetchData();
-      console.log(response);
     } catch (e) {
       setRequestStatus("failed");
       console.error(e);
@@ -84,9 +84,11 @@ export function FranchisesTable() {
                   )}
                 </TableCell>
                 <TableCell className="action-buttons">
-                  <Button variant="light">
-                    <EyeIcon classes="size-3" />
-                  </Button>
+                  <Link href={`/franchises/detail/${item.id}`}>
+                    <Button variant="light">
+                      <EyeIcon classes="size-3" />
+                    </Button>
+                  </Link>
                   <Button
                     variant="destructive"
                     onClick={() => handleDelete(item.id)}

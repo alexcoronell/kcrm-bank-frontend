@@ -36,7 +36,7 @@ function App() {
         <Route path="/user-types/detail" component={UserTypeFormPage} />
         <Route path="/franchises" component={FranchisesPage} />
         <Route path="/franchises/create" component={FranchisesFormPage} />
-        <Route path="/franchises/detail" component={FranchisesFormPage} />
+        <Route path="/franchises/detail/:id" component={FranchisesFormPage} />
       </Router>
       <Footer />
     </div>
