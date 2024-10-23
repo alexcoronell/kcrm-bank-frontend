@@ -1,3 +1,9 @@
+import Page from "../components/layouts/Page";
+import SalesForm from "../components/Shared/SalesForm";
 export default function SalesFormPage() {
-    return (<h4 className="SalesForm">SalesForm</h4>)
-};
+  return (
+    <Page titlePage="Crear Venta">
+      <SalesForm />
+    </Page>
+  );
+}

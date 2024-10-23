@@ -1,3 +1,10 @@
-export default function SalesPage() {
-    return (<h4 className="Sales">Sales</h4>)
-};
+import Page from "../components/layouts/Page";
+import SalesTable from "../components/Shared/SalesTable";
+
+export default function UsersPage() {
+  return (
+    <Page titlePage="Ventas">
+      <SalesTable />
+    </Page>
+  );
+}
