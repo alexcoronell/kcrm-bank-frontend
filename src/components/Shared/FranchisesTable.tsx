@@ -13,21 +13,41 @@ import { Button } from "../ui/Button";
 import EyeIcon from "../icons/EyeIcon";
 import TrashIcon from "../icons/TrashIcon";
 
+/* Interfaces */
 import { Franchise } from "../../core/interfaces/Franchise.interface";
 
+/* Services */
 import FranchiseService from "../../core/services/franchise.service";
 
+/* Types */
+import { RequestStatus } from "../../core/types/RequestStatus.type";
+
+/* Helpers */
 import { formatDateTime } from "../../helpers/formatDate.helper";
 
 export function FranchisesTable() {
-  const [franchise, setFranchise] = useState<Franchise[]>([]);
+  const [franchises, setFranchise] = useState<Franchise[]>([]);
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await FranchiseService.getAll();
-      setFranchise((await data) as unknown as Franchise[]);
-    };
-    fetchData().catch((e) => console.error(e));
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+    setRequestStatus("loading");
+    try {
+      const data = await FranchiseService.getAll();
+      setRequestStatus("success");
+      setFranchise(data as Franchise[]);
+    } catch (e) {
+      setRequestStatus("failed");
+      console.error(e);
+    }
+  };
+
+  const handleDelete = async (id: Franchise["id"]) => {
+    const response = await FranchiseService.delete(id);
+    fetchData();
+  };
 
   return (
     <TableRoot>
@@ -42,32 +62,67 @@ export function FranchisesTable() {
             <TableHeaderCell className="text-center">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {franchise.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell>{item.id}</TableCell>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>{formatDateTime(item.createAt)}</TableCell>
-              <TableCell>{formatDateTime(item.updateAt)}</TableCell>
-              <TableCell className="text-white">
-                {item.active ? (
-                  <span className="bg-green-900 px-2">Activo</span>
-                ) : (
-                  <span className="bg-red-900 px-2">Inactivo</span>
-                )}
-              </TableCell>
-              <TableCell className="action-buttons">
-                <Button variant="light">
-                  <EyeIcon classes="size-3" />
-                </Button>
-                <Button variant="destructive">
-                  <TrashIcon classes="size-3" />
-                </Button>
+        {franchises.length > 0 && requestStatus !== "loading" && (
+          <TableBody>
+            {franchises.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.id}</TableCell>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{formatDateTime(item.createAt)}</TableCell>
+                <TableCell>{formatDateTime(item.updateAt)}</TableCell>
+                <TableCell className="text-white">
+                  {item.active ? (
+                    <span className="bg-green-900 px-2">Activo</span>
+                  ) : (
+                    <span className="bg-red-900 px-2">Inactivo</span>
+                  )}
+                </TableCell>
+                <TableCell className="action-buttons">
+                  <Button variant="light">
+                    <EyeIcon classes="size-3" />
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    <TrashIcon classes="size-3" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
+        {(franchises.length < 1 || franchises.length === undefined) &&
+          requestStatus !== "loading" && (
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={6} className="text-center">
+                  ----- No hay Datos -----
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          )}
+
+        {(franchises.length < 1 || franchises.length === undefined) &&
+          requestStatus === "failed" && (
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={6} className="text-center">
+                  ----- Error cargando los datos -----
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          )}
+        {requestStatus === "loading" && (
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={6} className="text-center">
+                ----- Cargando los datos -----
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-        <TableFoot>
+          </TableBody>
+        )}
+        {/* <TableFoot>
           <TableRow>
             <TableHeaderCell colSpan={2} scope="row" className="text-right">
               4,642
@@ -76,7 +131,7 @@ export function FranchisesTable() {
               1
             </TableHeaderCell>
           </TableRow>
-        </TableFoot>
+        </TableFoot> */}
       </Table>
     </TableRoot>
   );
