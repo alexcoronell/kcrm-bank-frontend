@@ -30,18 +30,6 @@ export default class FranchiseService {
     });
   };
 
-  static activate = async (id: Franchise["id"]) => {
-    return await axios.put(`${url}/activate/${id}`, {
-      headers: { "Content-Type": "application/json" },
-    });
-  };
-
-  static deactivate = async (id: Franchise["id"]) => {
-    return await axios.put(`${url}/deactivate/${id}`, {
-      headers: { "Content-Type": "application/json" },
-    });
-  };
-
   static delete = async (id: Franchise["id"]) => {
     return await axios.delete(`${url}/${id}`);
   };
