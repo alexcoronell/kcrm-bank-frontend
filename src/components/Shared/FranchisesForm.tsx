@@ -99,7 +99,6 @@ export default function FranchisesForm({ id }: Props) {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    console.log("ME EJECUTO**************");
     validateName();
     if (errorName || statusMode === "detail") return;
     try {

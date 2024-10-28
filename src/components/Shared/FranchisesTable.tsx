@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import { Label } from "../ui/Label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/Select";
 import {
   Table,
   TableBody,
@@ -28,26 +36,33 @@ import { formatDateTime } from "../../helpers/formatDate.helper";
 
 export function FranchisesTable() {
   const [franchises, setFranchise] = useState<Franchise[]>([]);
+  const [total, setTotal] = useState<number>(0);
+  const [itemsByPages, setItemByPages] = useState<number>(5);
+  const [totalPages, setTotalPages] = useState<number>(0);
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
   useEffect(() => {
+    console.log(itemsByPages);
     fetchData();
-  }, []);
+  }, [itemsByPages]);
 
   const fetchData = async () => {
     setRequestStatus("loading");
     try {
-      const { data } = await FranchiseService.getAll();
+      const {
+        data: { items, totalItems },
+      } = await FranchiseService.getAll();
       setRequestStatus("success");
-      setFranchise(data);
+      setFranchise(items);
+      setTotal(totalItems);
     } catch (e) {
       setRequestStatus("failed");
-      console.error(e);
     }
   };
 
   const handleDelete = async (id: Franchise["id"]) => {
     try {
       const response = await FranchiseService.delete(id);
+      console.log(response);
       fetchData();
     } catch (e) {
       setRequestStatus("failed");
@@ -55,8 +70,35 @@ export function FranchisesTable() {
     }
   };
 
+  const handleChangeItemsByPage = (e: any) => {
+    setItemByPages(e);
+  };
+
   return (
     <TableRoot>
+      <div className="flex items-center justify-end px-3">
+        <div className="inline-grid grid-cols-2 items-center gap-x-3">
+          <Label htmlFor="size">Items por página</Label>{" "}
+          <Select
+            onValueChange={handleChangeItemsByPage}
+            value={itemsByPages.toString()}
+          >
+            {" "}
+            <SelectTrigger id="size" className="mt-2">
+              {" "}
+              <SelectValue placeholder="Select" />{" "}
+            </SelectTrigger>{" "}
+            <SelectContent>
+              {" "}
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>{" "}
+            </SelectContent>{" "}
+          </Select>
+        </div>
+      </div>
       <Table>
         <TableHead>
           <TableRow>
@@ -131,7 +173,7 @@ export function FranchisesTable() {
             </TableRow>
           </TableBody>
         )}
-        {/* <TableFoot>
+        <TableFoot>
           <TableRow>
             <TableHeaderCell colSpan={2} scope="row" className="text-right">
               4,642
@@ -140,7 +182,7 @@ export function FranchisesTable() {
               1
             </TableHeaderCell>
           </TableRow>
-        </TableFoot> */}
+        </TableFoot>
       </Table>
     </TableRoot>
   );
