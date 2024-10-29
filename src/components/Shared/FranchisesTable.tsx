@@ -18,6 +18,7 @@ import {
   TableRoot,
   TableRow,
 } from "../ui/Table";
+import TableHeadComponent from "./TableHeadComponent";
 import TableRowAlternative from "./TableRowAlternative";
 import { Button } from "../ui/Button";
 import EyeIcon from "../icons/EyeIcon";
@@ -43,6 +44,7 @@ export function FranchisesTable() {
   const [page, setPage] = useState<number>(1);
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
   const columns = 6;
+  const titleColums = ["Nombre", "Creado", "Actualizado", "Activo"];
   useEffect(() => {
     fetchData();
   }, [page, limit]);
@@ -115,16 +117,7 @@ export function FranchisesTable() {
         </div>
       </div>
       <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeaderCell>Id.</TableHeaderCell>
-            <TableHeaderCell>Nombre</TableHeaderCell>
-            <TableHeaderCell>Creado</TableHeaderCell>
-            <TableHeaderCell>Actualizado</TableHeaderCell>
-            <TableHeaderCell>Activo</TableHeaderCell>
-            <TableHeaderCell className="text-center">Acciones</TableHeaderCell>
-          </TableRow>
-        </TableHead>
+        <TableHeadComponent titleColumns={titleColums} />
         <TableBody>
           {franchises.length > 0 && requestStatus !== "loading" ? (
             <>
