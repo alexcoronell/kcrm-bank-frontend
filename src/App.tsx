@@ -33,7 +33,7 @@ function App() {
         <Route path="/users/detail" component={UsersFormPage} />
         <Route path="/user-types" component={UserTypePage} />
         <Route path="/user-types/create" component={UserTypeFormPage} />
-        <Route path="/user-types/detail" component={UserTypeFormPage} />
+        <Route path="/user-types/detail/:id" component={UserTypeFormPage} />
         <Route path="/franchises" component={FranchisesPage} />
         <Route path="/franchises/create" component={FranchisesFormPage} />
         <Route path="/franchises/detail/:id" component={FranchisesFormPage} />
