@@ -124,7 +124,7 @@ export function UserTypesTable() {
       <div className="flex items-center justify-end px-3">
         <div className="inline-grid grid-cols-2 items-center gap-x-3">
           <Label htmlFor="size">Items por página</Label>{" "}
-          <Select onValueChange={handleChangeLimit} value={limit.toString()}>
+          <Select onValueChange={handleChangeLimit} value={limit.toString()} disabled={total < 5}>
             {" "}
             <SelectTrigger id="size" className="mt-2">
               {" "}
@@ -134,9 +134,9 @@ export function UserTypesTable() {
               {" "}
               <SelectItem value="5">5</SelectItem>
               <SelectItem value="10">10</SelectItem>
-              <SelectItem value="25">25</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-              <SelectItem value="100">100</SelectItem>{" "}
+              {total > 25 &&(<SelectItem value="25">25</SelectItem>)}
+              {total > 50 &&(<SelectItem value="50">50</SelectItem>)}
+              {total > 100 &&(<SelectItem value="100">100</SelectItem>)}{" "}
             </SelectContent>{" "}
           </Select>
         </div>
@@ -144,7 +144,7 @@ export function UserTypesTable() {
       <Table>
         <TableHeadComponent titleColumns={titleColums} />
         <TableBody>
-          {userTypes.length > 0 && requestStatus !== "loading" ? (
+          {total > 0 && requestStatus !== "loading" ? (
             <>
               {userTypes.map((item) => (
                 <TableRow key={item.id}>
@@ -178,7 +178,7 @@ export function UserTypesTable() {
             </>
           ) : (
             <TableRowAlternative
-              itemLength={userTypes.length}
+              itemLength={total}
               requestStatus={requestStatus}
               columns={columns}
             />
