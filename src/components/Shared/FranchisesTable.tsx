@@ -37,23 +37,25 @@ import { formatDateTime } from "../../helpers/formatDate.helper";
 export function FranchisesTable() {
   const [franchises, setFranchise] = useState<Franchise[]>([]);
   const [total, setTotal] = useState<number>(0);
-  const [itemsByPages, setItemByPages] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(10);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
+  const columns = 6;
   useEffect(() => {
-    console.log(itemsByPages);
     fetchData();
-  }, [itemsByPages]);
+  }, [page, limit]);
 
   const fetchData = async () => {
     setRequestStatus("loading");
     try {
       const {
-        data: { items, totalItems },
-      } = await FranchiseService.getAll();
+        data: { items, count },
+      } = await FranchiseService.getAll(page, limit);
       setRequestStatus("success");
       setFranchise(items);
-      setTotal(totalItems);
+      setTotal(count);
+      setTotalPages(Math.ceil(total / limit));
     } catch (e) {
       setRequestStatus("failed");
     }
@@ -62,7 +64,6 @@ export function FranchisesTable() {
   const handleDelete = async (id: Franchise["id"]) => {
     try {
       const response = await FranchiseService.delete(id);
-      console.log(response);
       fetchData();
     } catch (e) {
       setRequestStatus("failed");
@@ -70,8 +71,24 @@ export function FranchisesTable() {
     }
   };
 
-  const handleChangeItemsByPage = (e: any) => {
-    setItemByPages(e);
+  const handleChangeLimit = (e: any) => {
+    setLimit(e);
+  };
+
+  const prevPage = () => {
+    if (page == 1) {
+      return;
+    } else {
+      setPage(page - 1);
+    }
+  };
+
+  const nextPage = () => {
+    if (page == totalPages) {
+      return;
+    } else {
+      setPage(page + 1);
+    }
   };
 
   return (
@@ -79,10 +96,7 @@ export function FranchisesTable() {
       <div className="flex items-center justify-end px-3">
         <div className="inline-grid grid-cols-2 items-center gap-x-3">
           <Label htmlFor="size">Items por página</Label>{" "}
-          <Select
-            onValueChange={handleChangeItemsByPage}
-            value={itemsByPages.toString()}
-          >
+          <Select onValueChange={handleChangeLimit} value={limit.toString()}>
             {" "}
             <SelectTrigger id="size" className="mt-2">
               {" "}
@@ -147,7 +161,7 @@ export function FranchisesTable() {
           requestStatus !== "failed" && (
             <TableBody>
               <TableRow>
-                <TableCell colSpan={6} className="text-center">
+                <TableCell colSpan={columns} className="text-center">
                   ----- No hay Datos -----
                 </TableCell>
               </TableRow>
@@ -158,7 +172,7 @@ export function FranchisesTable() {
           requestStatus === "failed" && (
             <TableBody>
               <TableRow>
-                <TableCell colSpan={6} className="text-center">
+                <TableCell colSpan={columns} className="text-center">
                   ----- Error cargando los datos -----
                 </TableCell>
               </TableRow>
@@ -167,7 +181,7 @@ export function FranchisesTable() {
         {requestStatus === "loading" && (
           <TableBody>
             <TableRow>
-              <TableCell colSpan={6} className="text-center">
+              <TableCell colSpan={columns} className="text-center">
                 ----- Cargando los datos -----
               </TableCell>
             </TableRow>
@@ -175,11 +189,54 @@ export function FranchisesTable() {
         )}
         <TableFoot>
           <TableRow>
-            <TableHeaderCell colSpan={2} scope="row" className="text-right">
-              4,642
+            <TableCell colSpan={columns} className="text-center">
+              <Button
+                variant="ghost"
+                className="mx-1"
+                disabled={page === 1}
+                onClick={() => setPage(1)}
+              >
+                Primera
+              </Button>
+              <Button
+                variant="ghost"
+                className="mx-1"
+                disabled={page === 1}
+                onClick={prevPage}
+              >
+                Anterior
+              </Button>
+              <p className="mx-3 inline">{page}</p>
+              <Button
+                variant="ghost"
+                className="mx-1"
+                onClick={nextPage}
+                disabled={page === totalPages}
+              >
+                Siguiente
+              </Button>
+              <Button
+                variant="ghost"
+                className="mx-1"
+                onClick={() => setPage(totalPages)}
+                disabled={page === totalPages}
+              >
+                Ultima
+              </Button>
+            </TableCell>
+          </TableRow>
+
+          <TableRow>
+            <TableHeaderCell
+              colSpan={columns - 2}
+              scope="row"
+              className="text-right"
+            ></TableHeaderCell>
+            <TableHeaderCell scope="row" className="text-right">
+              Total:
             </TableHeaderCell>
-            <TableHeaderCell colSpan={3} scope="row" className="text-right">
-              1
+            <TableHeaderCell scope="row" className="text-center">
+              {total}
             </TableHeaderCell>
           </TableRow>
         </TableFoot>

@@ -12,8 +12,8 @@ export default class FranchiseService {
     });
   };
 
-  static getAll = async () => {
-    return await axios.get(url);
+  static getAll = async (page = 1, limit = 10) => {
+    return await axios.get(`${url}?page=${page}&limit=${limit}`);
   };
 
   static count = async () => {
