@@ -1,7 +1,10 @@
+/* Components */
 import Page from "../components/layouts/Page";
 import { FranchisesTable } from "../components/Shared/FranchisesTable";
-const titleButton = "Nueva franquicia"
-const url = "/franchises/create"
+
+/* Variables */
+const titleButton = "Nueva franquicia";
+const url = "/franchises/create";
 
 export default function FranchisesPage() {
   return (
