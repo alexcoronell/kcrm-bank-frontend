@@ -13,13 +13,12 @@ import {
   TableBody,
   TableCell,
   TableFoot,
-  TableHead,
-  TableHeaderCell,
   TableRoot,
   TableRow,
 } from "../ui/Table";
 import TableHeadComponent from "./TableHeadComponent";
 import TableRowAlternative from "./TableRowAlternative";
+import TableRowTotal from "./TableRowTotal";
 import { Button } from "../ui/Button";
 import EyeIcon from "../icons/EyeIcon";
 import TrashIcon from "../icons/TrashIcon";
@@ -198,19 +197,7 @@ export function FranchisesTable() {
             </TableCell>
           </TableRow>
 
-          <TableRow>
-            <TableHeaderCell
-              colSpan={columns - 2}
-              scope="row"
-              className="text-right"
-            ></TableHeaderCell>
-            <TableHeaderCell scope="row" className="text-right">
-              Total:
-            </TableHeaderCell>
-            <TableHeaderCell scope="row" className="text-center">
-              {total}
-            </TableHeaderCell>
-          </TableRow>
+          <TableRowTotal columns={columns} total={total} />
         </TableFoot>
       </Table>
     </TableRoot>
