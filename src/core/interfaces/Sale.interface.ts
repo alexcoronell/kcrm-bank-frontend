@@ -3,8 +3,8 @@ import type { User } from "./User.interface";
 
 export interface Sale {
 	id: number;
-	quotaRequested: number;
 	product: Product;
+	quotaRequested: number;
 	rate: string;
 	createAt: Date;
 	createdBy: User;
