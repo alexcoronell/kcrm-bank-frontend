@@ -20,6 +20,10 @@ export default class UserTypeService {
     return await axios.get(`${url}?page=${page}&limit=${limit}`);
   };
 
+  static getAllSimple = async () => {
+    return await axios.get(`${url}/simple`);
+  };
+
   static count = async () => {
     return await axios.get(`${url}/count`);
   };
