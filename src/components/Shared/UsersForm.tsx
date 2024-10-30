@@ -33,7 +33,7 @@ import UserService from "../../core/services/user.service";
 import UserTypeService from "../../core/services/userType.service";
 
 /* Helpers */
-import { validateEmailHelper } from "../../helpers/validators.helper";
+import { validateEmailHelper } from "../../core/helpers/validators.helper";
 
 interface Props {
   id: UserType["id"] | null;

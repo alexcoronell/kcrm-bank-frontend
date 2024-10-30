@@ -17,7 +17,7 @@ import { Sale } from "../../core/interfaces/Sale.interface";
 
 import SaleService from "../../core/services/sale.service";
 
-import { formatDateTime } from "../../helpers/formatDate.helper";
+import { formatDateTime } from "../../core/helpers/formatDate.helper";
 
 export function SalesTable() {
   const [sales, setSales] = useState<Sale[]>([])

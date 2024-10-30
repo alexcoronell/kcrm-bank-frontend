@@ -33,7 +33,7 @@ import UserTypeService from "../../core/services/userType.service";
 import { RequestStatus } from "../../core/types/RequestStatus.type";
 
 /* Helpers */
-import { formatDateTime } from "../../helpers/formatDate.helper";
+import { formatDateTime } from "../../core/helpers/formatDate.helper";
 
 export function UserTypesTable() {
   const [userTypes, setUserTypes] = useState<UserType[]>([]);

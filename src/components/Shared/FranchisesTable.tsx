@@ -33,7 +33,7 @@ import FranchiseService from "../../core/services/franchise.service";
 import { RequestStatus } from "../../core/types/RequestStatus.type";
 
 /* Helpers */
-import { formatDateTime } from "../../helpers/formatDate.helper";
+import { formatDateTime } from "../../core/helpers/formatDate.helper";
 
 export function FranchisesTable() {
   const [franchises, setFranchise] = useState<Franchise[]>([]);
