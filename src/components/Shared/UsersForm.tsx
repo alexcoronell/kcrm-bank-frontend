@@ -41,7 +41,6 @@ interface Props {
 
 export default function UsersForm({ id }: Props) {
   const [userTypes, setUserTypes] = useState<UserType[]>([]);
-  const [userTypeId, setUserTypeId] = useState<string | null>(null);
   const [statusMode, setStatusMode] = useState<StatusMode>("create");
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
   const [requestStatusUserTypes, setRequestStatusUserTypes] =
@@ -54,17 +53,19 @@ export default function UsersForm({ id }: Props) {
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
   const [errorEmailMessage, setErrorEmailMessage] = useState<string>("");
 
-  
   const [password, setPassword] = useState<string>("");
   const [errorPassword, setErrorPassword] = useState<boolean>(false);
   const [errorPasswordMessage, setErrorPasswordMessage] = useState<string>("");
 
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [errorConfirmPassword, setErrorConfirmPassword] = useState<boolean>(false);
-  const [errorConfirmPasswordMessage, setErrorConfirmPasswordMessage] = useState<string>("");
+  const [errorConfirmPassword, setErrorConfirmPassword] =
+    useState<boolean>(false);
+  const [errorConfirmPasswordMessage, setErrorConfirmPasswordMessage] =
+    useState<string>("");
 
+  const [userTypeId, setUserTypeId] = useState<string | null>(null);
+  const [errorUserTypeId, setErrorUserTypeId] = useState<boolean>(false);
 
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
   const [requestMessage, setRequestMessage] = useState<string>("");
   const [showRequestMessage, setShowRequestMessage] = useState<boolean>(false);
@@ -79,7 +80,6 @@ export default function UsersForm({ id }: Props) {
       const { name, email, active, userType } = data;
       setName(name);
       setEmail(email);
-      setIsAdmin(isAdmin);
       setUserTypeId(userType.id as string);
       setActive(active);
       setRequestStatus("success");
@@ -142,7 +142,7 @@ export default function UsersForm({ id }: Props) {
   };
 
   const validatePassword = () => {
-    if (password.length < 20) {
+    if (password.length < 8) {
       setErrorPassword(true);
       setErrorPasswordMessage(
         "La contraseña es requerida y debe tener al menos 20 caracteres"
@@ -151,6 +151,7 @@ export default function UsersForm({ id }: Props) {
       const message = "Las contraseñas no coinciden";
       setErrorEmailMessage(message);
       setErrorConfirmPasswordMessage(message);
+      setErrorPasswordMessage(message);
       setErrorPassword(true);
       setErrorConfirmPassword(true);
     } else {
@@ -159,8 +160,14 @@ export default function UsersForm({ id }: Props) {
     }
   };
 
+  const validateUserTypeId = () => {
+    userTypeId === "" || !userTypeId
+      ? setErrorUserTypeId(true)
+      : setErrorUserTypeId(false);
+  };
+
   const handleChangeUserType = (e: any) => {
-    console.log(e);
+    validateUserTypeId();
     setUserTypeId(e);
   };
 
@@ -177,15 +184,74 @@ export default function UsersForm({ id }: Props) {
   };
 
   const clean = () => {
-    setErrorName(false);
-    setActive(false);
-    setIsAdmin(false);
     setName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setUserTypeId("");
+    setErrorName(false);
+    setErrorEmail(false);
+    setErrorPassword(false);
+    setErrorConfirmPassword(false);
+    setActive(false);
+    setName("");
+  };
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
+    validateName();
+    validateEmail();
+    validatePassword();
+    validateUserTypeId();
+    if (
+      errorName ||
+      errorEmail ||
+      errorPassword ||
+      errorUserTypeId ||
+      statusMode === "detail"
+    )
+      return;
+    try {
+      const userType = Number.parseInt(userTypeId as string);
+      if (statusMode === "create") {
+        console.log("save");
+        const dto: CreateUserDto = {
+          name,
+          email,
+          password,
+          userType,
+        };
+        await UserService.save(dto);
+        setRequestMessage("Usuario guardado correctamente");
+        clean();
+      } else {
+        console.log("update");
+        const dto: UpdateUserDto = {
+          name,
+          email,
+          password,
+          userType,
+          active,
+        };
+        await UserService.update(id as number, dto);
+        setRequestMessage("Usuario actualizado correctamente");
+        setStatusMode("detail");
+      }
+      setRequestStatus("success");
+    } catch (e) {
+      setRequestStatus("failed");
+      setRequestMessage("Usuario no pudo ser guardado");
+    } finally {
+      setShowRequestMessage(true);
+      setTimeout(() => setShowRequestMessage(false), 2000);
+    }
   };
 
   return (
     <div className="UsersForm max-w-[800px] mx-auto">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="md:grid md:grid-cols-2 md:gap-x-3">
           {/* Name */}
           <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
@@ -307,6 +373,10 @@ export default function UsersForm({ id }: Props) {
                 )}
               </SelectContent>
             </Select>
+            <ErrorInputMessage
+              message={"El tipo de usuario es obligatorio"}
+              errorStatus={errorUserTypeId}
+            />
           </div>
 
           {statusMode !== "create" && (
