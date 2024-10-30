@@ -46,22 +46,26 @@ export default function UsersForm({ id }: Props) {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
   const [requestStatusUserTypes, setRequestStatusUserTypes] =
     useState<RequestStatus>("init");
+
   const [name, setName] = useState<string>("");
+  const [errorName, setErrorName] = useState<boolean>(false);
+
   const [email, setEmail] = useState<string>("");
-  const [emailError, setEmailError] = useState<boolean>(false);
-  const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
+  const [errorEmail, setErrorEmail] = useState<boolean>(false);
+  const [errorEmailMessage, setErrorEmailMessage] = useState<string>("");
+
+  
   const [password, setPassword] = useState<string>("");
+  const [errorPassword, setErrorPassword] = useState<boolean>(false);
+  const [errorPasswordMessage, setErrorPasswordMessage] = useState<string>("");
+
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [passwordError, setPasswordError] = useState<boolean>(false);
-  const [confirmPasswordError, setConfirmPasswordError] =
-    useState<boolean>(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>("");
-  const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] =
-    useState<string>("");
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState<boolean>(false);
+  const [errorConfirmPasswordMessage, setErrorConfirmPasswordMessage] = useState<string>("");
+
+
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
-  const [errorName, setErrorName] = useState<boolean>(false);
-  const [errorEmail, setErrorEmail] = useState<boolean>(false);
   const [requestMessage, setRequestMessage] = useState<string>("");
   const [showRequestMessage, setShowRequestMessage] = useState<boolean>(false);
 
@@ -127,31 +131,31 @@ export default function UsersForm({ id }: Props) {
 
   const validateEmail = () => {
     if (email.length === 0 || !email) {
-      setEmailErrorMessage("El correo electrónico es obligatorio");
-      setEmailError(true);
+      setErrorEmailMessage("El correo electrónico es obligatorio");
+      setErrorEmail(true);
     } else if (!validateEmailHelper(email)) {
-      setEmailErrorMessage("El correo electrónico no es válido");
-      setEmailError(true);
+      setErrorEmailMessage("El correo electrónico no es válido");
+      setErrorEmail(true);
     } else {
-      setEmailError(false);
+      setErrorEmail(false);
     }
   };
 
   const validatePassword = () => {
     if (password.length < 20) {
-      setPasswordError(true);
-      setPasswordErrorMessage(
+      setErrorPassword(true);
+      setErrorPasswordMessage(
         "La contraseña es requerida y debe tener al menos 20 caracteres"
       );
     } else if (password !== confirmPassword) {
       const message = "Las contraseñas no coinciden";
-      setPasswordErrorMessage(message);
-      setConfirmPasswordErrorMessage(message);
-      setPasswordError(true);
-      setConfirmPasswordError(true);
+      setErrorEmailMessage(message);
+      setErrorConfirmPasswordMessage(message);
+      setErrorPassword(true);
+      setErrorConfirmPassword(true);
     } else {
-      setPasswordError(false);
-      setConfirmPasswordError(false);
+      setErrorPassword(false);
+      setErrorConfirmPassword(false);
     }
   };
 
@@ -220,8 +224,8 @@ export default function UsersForm({ id }: Props) {
               onBlur={validateEmail}
             />{" "}
             <ErrorInputMessage
-              message={emailErrorMessage}
-              errorStatus={emailError}
+              message={errorEmailMessage}
+              errorStatus={errorEmail}
             />
           </div>
         </div>
@@ -243,8 +247,8 @@ export default function UsersForm({ id }: Props) {
               onBlur={validatePassword}
             />{" "}
             <ErrorInputMessage
-              message={passwordErrorMessage}
-              errorStatus={passwordError}
+              message={errorPasswordMessage}
+              errorStatus={errorPassword}
             />
           </div>
 
@@ -266,8 +270,8 @@ export default function UsersForm({ id }: Props) {
               onBlur={validatePassword}
             />{" "}
             <ErrorInputMessage
-              message={confirmPasswordErrorMessage}
-              errorStatus={confirmPasswordError}
+              message={errorConfirmPasswordMessage}
+              errorStatus={errorConfirmPassword}
             />
           </div>
         </div>
