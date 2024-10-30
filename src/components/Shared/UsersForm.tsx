@@ -116,7 +116,7 @@ export default function UsersForm({ id }: Props) {
 
   useEffect(() => {
     if (id) {
-      //get();
+      get();
       setStatusMode("detail");
     }
   }, [id]);
@@ -216,7 +216,6 @@ export default function UsersForm({ id }: Props) {
     try {
       const userType = Number.parseInt(userTypeId as string);
       if (statusMode === "create") {
-        console.log("save");
         const dto: CreateUserDto = {
           name,
           email,
@@ -296,51 +295,51 @@ export default function UsersForm({ id }: Props) {
           </div>
         </div>
 
-        <div className="md:grid md:grid-cols-2 md:gap-x-3 ">
-          {/* Password */}
-          <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-            {" "}
-            <Label htmlFor="password">Contraseña</Label>{" "}
-            <Input
-              name="password"
-              id="password"
-              placeholder="Ingresa la contraseña"
-              type="password"
-              value={password}
-              disabled={requestStatus === "loading"}
-              readOnly={statusMode === "detail"}
-              onChange={(e) => setPassword(e.target.value)}
-              onBlur={validatePassword}
-            />{" "}
-            <ErrorInputMessage
-              message={errorPasswordMessage}
-              errorStatus={errorPassword}
-            />
-          </div>
+        {statusMode === "create" && (
+          <div className="md:grid md:grid-cols-2 md:gap-x-3 ">
+            {/* Password */}
+            <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
+              {" "}
+              <Label htmlFor="password">Contraseña</Label>{" "}
+              <Input
+                name="password"
+                id="password"
+                placeholder="Ingresa la contraseña"
+                type="password"
+                value={password}
+                disabled={requestStatus === "loading"}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={validatePassword}
+              />{" "}
+              <ErrorInputMessage
+                message={errorPasswordMessage}
+                errorStatus={errorPassword}
+              />
+            </div>
 
-          {/* Confirm Password */}
-          <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-            {" "}
-            <Label htmlFor="confirm-password">
-              Confirma tu contraseña
-            </Label>{" "}
-            <Input
-              name="confirmPassword"
-              id="confirmPassword"
-              placeholder="Ingresa nuevamente la contraseña"
-              type="password"
-              value={confirmPassword}
-              disabled={requestStatus === "loading"}
-              readOnly={statusMode === "detail"}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              onBlur={validatePassword}
-            />{" "}
-            <ErrorInputMessage
-              message={errorConfirmPasswordMessage}
-              errorStatus={errorConfirmPassword}
-            />
+            {/* Confirm Password */}
+            <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
+              {" "}
+              <Label htmlFor="confirm-password">
+                Confirma tu contraseña
+              </Label>{" "}
+              <Input
+                name="confirmPassword"
+                id="confirmPassword"
+                placeholder="Ingresa nuevamente la contraseña"
+                type="password"
+                value={confirmPassword}
+                disabled={requestStatus === "loading"}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                onBlur={validatePassword}
+              />{" "}
+              <ErrorInputMessage
+                message={errorConfirmPasswordMessage}
+                errorStatus={errorConfirmPassword}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="md:grid md:grid-cols-2 md:gap-x-3 md:items-center">
           <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">

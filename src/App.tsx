@@ -27,10 +27,10 @@ function App() {
         <Route path="/login" component={LoginPage} />
         <Route path="/sales" component={SalesPage} />
         <Route path="/sales/detail" component={SalesFormPage} />
-        <Route path="/sales/create" component={SalesFormPage} />
+        <Route path="/sales/create/:id" component={SalesFormPage} />
         <Route path="/users" component={UsersPage} />
         <Route path="/users/create" component={UsersFormPage} />
-        <Route path="/users/detail" component={UsersFormPage} />
+        <Route path="/users/detail/:id" component={UsersFormPage} />
         <Route path="/user-types" component={UserTypePage} />
         <Route path="/user-types/create" component={UserTypeFormPage} />
         <Route path="/user-types/detail/:id" component={UserTypeFormPage} />

@@ -158,7 +158,7 @@ export function UsersTable() {
                     )}
                   </TableCell>
                   <TableCell className="action-buttons">
-                    <Link href={`/user-types/detail/${item.id}`}>
+                    <Link href={`/users/detail/${item.id}`}>
                       <Button variant="light">
                         <EyeIcon classes="size-3" />
                       </Button>
