@@ -13,6 +13,7 @@ import { Input } from "../ui/Input";
 import { Label } from "../ui/Label";
 import { Switch } from "../ui/Switch";
 import { Button } from "../ui/Button";
+import SelectItemAlternative from "./SelectItemAlternative";
 import { ErrorInputMessage } from "../ui/ErrorInputMessage";
 import { RequestMessage } from "../ui/RequestMessage";
 
@@ -33,7 +34,6 @@ import UserTypeService from "../../core/services/userType.service";
 
 /* Helpers */
 import { validateEmailHelper } from "../../helpers/validators.helper";
-import SelectItemAlternative from "./SelectItemAlternative";
 
 interface Props {
   id: UserType["id"] | null;
@@ -277,7 +277,7 @@ export default function UsersForm({ id }: Props) {
             <Label htmlFor="userTypeId">Tipo de Usuario</Label>{" "}
             <Select
               onValueChange={handleChangeUserType}
-              value={userTypeId as string}
+              value={userTypeId?.toString()}
             >
               {" "}
               <SelectTrigger id="userTypeId" className="mt-2">
@@ -285,21 +285,23 @@ export default function UsersForm({ id }: Props) {
                 <SelectValue placeholder="Select" />{" "}
               </SelectTrigger>{" "}
               <SelectContent>
-                {" "}
-                {userTypes.map((item) => (
-                  <SelectItem
-                    key={item.id}
-                    value={item.id as unknown as string}
-                  >
+                {userTypes.length > 0 &&
+                requestStatusUserTypes === "success" ? (
+                  <>
                     {" "}
-                    {item.name}{" "}
-                  </SelectItem>
-                ))}{" "}
-                <SelectItemAlternative
-                  status={requestStatusUserTypes}
-                  total={userTypes.length}
-                />
-              </SelectContent>{" "}
+                    {userTypes.map((item, index) => (
+                      <SelectItem key={index} value={item.id.toString()}>
+                        {item.name}
+                      </SelectItem>
+                    ))}
+                  </>
+                ) : (
+                  <SelectItemAlternative
+                    total={userTypes.length}
+                    status={requestStatusUserTypes}
+                  />
+                )}
+              </SelectContent>
             </Select>
           </div>
 
