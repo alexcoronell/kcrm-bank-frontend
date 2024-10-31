@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "wouter";
 
-import UserTypeForm from "../../components/Shared/UserTypeForm";
+import UserTypeForm from "../../components/Shared/RoleForm";
 /* Components */
 import Page from "../../components/layouts/Page";
 
-export default function UserTypeFormPage() {
+export default function RolesFormPage() {
 	const [currentId, setCurrentId] = useState<number | null>(null);
 	const [titlePage, setTitlePage] = useState("Detalle Tipo de Usuario");
 	const params = useParams();

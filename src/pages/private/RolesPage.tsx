@@ -1,19 +1,19 @@
-import { UserTypesTable } from "../../components/Shared/UserTypesTable";
+import { RolesTable } from "../../components/Shared/RolesTable";
 /* Components */
 import Page from "../../components/layouts/Page";
 
 /* Variables */
 const titleButton = "Nuevo tipo de usuario";
-const url = "/user-types/create";
+const url = "/roles/create";
 
-export default function UserTypePage() {
+export default function RolesPage() {
 	return (
 		<Page
-			titlePage="Tipos de Usuario"
+			titlePage="Roles"
 			titleButton={titleButton}
 			urlButton={url}
 		>
-			<UserTypesTable />
+			<RolesTable />
 		</Page>
 	);
 }

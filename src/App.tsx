@@ -14,8 +14,8 @@ import ProductsPage from "./pages/private/ProductsPage";
 import ProductsFormPage from "./pages/private/ProductsFormPage";
 import SalesFormPage from "./pages/private/SalesFormPage";
 import SalesPage from "./pages/private/SalesPage";
-import UserTypeFormPage from "./pages/private/UserTypeFormPage";
-import UserTypePage from "./pages/private/UserTypePage";
+import RolesFormPage from "./pages/private/RolesFormPage";
+import RolesPage from "./pages/private/RolesPage";
 import UsersFormPage from "./pages/private/UsersFormPage";
 import UsersPage from "./pages/private/UsersPage";
 
@@ -41,9 +41,9 @@ function App() {
         <Route path="/users" component={UsersPage} />
         <Route path="/users/create" component={UsersFormPage} />
         <Route path="/users/detail/:id" component={UsersFormPage} />
-        <Route path="/user-types" component={UserTypePage} />
-        <Route path="/user-types/create" component={UserTypeFormPage} />
-        <Route path="/user-types/detail/:id" component={UserTypeFormPage} />
+        <Route path="/roles" component={RolesPage} />
+        <Route path="/roles/create" component={RolesFormPage} />
+        <Route path="/roles/detail/:id" component={RolesFormPage} />
       </Router>
       <Footer />
     </div>

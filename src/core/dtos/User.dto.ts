@@ -3,9 +3,9 @@ import type { User } from "../interfaces/User.interface";
 export interface CreateUserDto
 	extends Omit<
 		User,
-		"id" | "createAt" | "updateAt" | "active" | "deleted" | "userType"
+		"id" | "createAt" | "updateAt" | "active" | "deleted" | "role"
 	> {
-	userType: number;
+	role: number;
 }
 
 export interface UpdateUserDto extends CreateUserDto {

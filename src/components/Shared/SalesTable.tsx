@@ -155,14 +155,14 @@ export function SalesTable() {
 							{sales.map((item) => (
 								<TableRow key={item.id}>
 									<TableCell>{item.id}</TableCell>
-									<TableCell>{item.product}</TableCell>
+									<TableCell>{item.product.name}</TableCell>
 									<TableCell>{item.rate ? "Sí" : "No"}</TableCell>
 									<TableCell>{formatDateTime(item.createAt)}</TableCell>
 									<TableCell>{item.createdBy.name}</TableCell>
 									<TableCell>{formatDateTime(item.updateAt)}</TableCell>
 									<TableCell>{item.updatedBy.name}</TableCell>
 									<TableCell className="action-buttons">
-										<Link href={`/user-types/detail/${item.id}`}>
+										<Link href={`/sales/detail/${item.id}`}>
 											<Button variant="light">
 												<EyeIcon classes="size-3" />
 											</Button>

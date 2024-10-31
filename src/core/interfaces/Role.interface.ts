@@ -1,4 +1,4 @@
-export interface UserType {
+export interface Role {
 	id: number;
 	name: string;
 	createAt: Date;

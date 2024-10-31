@@ -1,4 +1,4 @@
-import type { UserType } from "./UserType.interface";
+import type { Role } from "./Role.interface";
 
 export interface User {
 	id: number;
@@ -9,5 +9,5 @@ export interface User {
 	updateAt: Date;
 	active: boolean;
 	deleted: boolean;
-	userType: UserType;
+	role: Role;
 }

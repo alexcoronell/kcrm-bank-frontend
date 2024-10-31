@@ -1,18 +1,19 @@
 import axios from "axios";
 
-const url = `${import.meta.env.VITE_API_URL}/user-types`;
+const url = `${import.meta.env.VITE_API_URL}/roles`;
 
 /* Interfaces */
-import type { UserType } from "../interfaces/UserType.interface";
+import type { Role } from "../interfaces/Role.interface";
 
 /* DTO's */
 import type {
-	CreateUserTypeDto,
-	UpdateUserTypeDto,
-} from "../dtos/UserType.dto";
+	CreateRoleDto,
+	UpdateRoleDto,
+} from "../dtos/Role.dto";
 
-export default class UserTypeService {
-	static save = async (dto: CreateUserTypeDto) => {
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
+export default class RoleService {
+	static save = async (dto: CreateRoleDto) => {
 		return await axios.post(url, dto, {
 			headers: { "Content-Type": "application/json" },
 		});
@@ -30,17 +31,17 @@ export default class UserTypeService {
 		return await axios.get(`${url}/count`);
 	};
 
-	static get = async (id: UserType["id"]) => {
+	static get = async (id: Role["id"]) => {
 		return await axios.get(`${url}/${id}`);
 	};
 
-	static update = async (id: UserType["id"], dto: UpdateUserTypeDto) => {
+	static update = async (id: Role["id"], dto: UpdateRoleDto) => {
 		return await axios.put(`${url}/${id}`, dto, {
 			headers: { "Content-Type": "application/json" },
 		});
 	};
 
-	static delete = async (id: UserType["id"]) => {
+	static delete = async (id: Role["id"]) => {
 		return await axios.delete(`${url}/${id}`);
 	};
 }
