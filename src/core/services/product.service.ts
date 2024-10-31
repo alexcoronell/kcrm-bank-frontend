@@ -1,16 +1,16 @@
 import axios from "axios";
 
-const url = `${import.meta.env.VITE_API_URL}/franchises`;
+const url = `${import.meta.env.VITE_API_URL}/products`;
 
-import type {
-  CreateFranchiseDto,
-  UpdateFranchiseDto,
-} from "../dtos/Franchise.dto";
-import type { Franchise } from "../interfaces/Franchise.interface";
+/* Interfaces */
+import type { Product } from "../interfaces/Product.interface";
+
+/* DTO's */
+import type { CreateProductDto, UpdateProductDto } from "../dtos/Product.dto";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
-export default class FranchiseService {
-  static save = async (dto: CreateFranchiseDto) => {
+export default class ProductService {
+  static save = async (dto: CreateProductDto) => {
     return await axios.post(url, dto, {
       headers: { "Content-Type": "application/json" },
     });
@@ -24,17 +24,17 @@ export default class FranchiseService {
     return await axios.get(`${url}/count`);
   };
 
-  static get = async (id: Franchise["id"]) => {
+  static get = async (id: Product["id"]) => {
     return await axios.get(`${url}/${id}`);
   };
 
-  static update = async (id: Franchise["id"], dto: UpdateFranchiseDto) => {
+  static update = async (id: Product["id"], dto: UpdateProductDto) => {
     return await axios.put(`${url}/${id}`, dto, {
       headers: { "Content-Type": "application/json" },
     });
   };
 
-  static delete = async (id: Franchise["id"]) => {
+  static delete = async (id: Product["id"]) => {
     return await axios.delete(`${url}/${id}`);
   };
 }

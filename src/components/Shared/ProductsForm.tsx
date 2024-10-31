@@ -20,7 +20,7 @@ import type { RequestStatus } from "../../core/types/RequestStatus.type";
 import type { StatusMode } from "../../core/types/StatusMode.type";
 
 /* Services */
-//import ProductService from "../../core/services/product.service";
+import ProductService from "../../core/services/product.service";
 
 interface Props {
 	id: Product["id"] | null;
