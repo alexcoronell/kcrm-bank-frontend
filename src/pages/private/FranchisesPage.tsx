@@ -1,6 +1,6 @@
-import { FranchisesTable } from "../components/Shared/FranchisesTable";
+import { FranchisesTable } from "../../components/Shared/FranchisesTable";
 /* Components */
-import Page from "../components/layouts/Page";
+import Page from "../../components/layouts/Page";
 
 /* Variables */
 const titleButton = "Nueva franquicia";

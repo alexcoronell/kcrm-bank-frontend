@@ -1,5 +1,5 @@
-import { UsersTable } from "../components/Shared/UsersTable";
-import Page from "../components/layouts/Page";
+import { UsersTable } from "../../components/Shared/UsersTable";
+import Page from "../../components/layouts/Page";
 
 /* Variables */
 const titleButton = "Nuevo  usuario";

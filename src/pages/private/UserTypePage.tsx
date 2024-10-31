@@ -1,6 +1,6 @@
-import { UserTypesTable } from "../components/Shared/UserTypesTable";
+import { UserTypesTable } from "../../components/Shared/UserTypesTable";
 /* Components */
-import Page from "../components/layouts/Page";
+import Page from "../../components/layouts/Page";
 
 /* Variables */
 const titleButton = "Nuevo tipo de usuario";

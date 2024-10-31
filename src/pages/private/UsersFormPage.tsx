@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "wouter";
 
-import UserTypeForm from "../components/Shared/UserTypeForm";
+import UsersForm from "../../components/Shared/UsersForm";
 /* Components */
-import Page from "../components/layouts/Page";
+import Page from "../../components/layouts/Page";
 
-export default function UserTypeFormPage() {
+export default function UsersFormPage() {
 	const [currentId, setCurrentId] = useState<number | null>(null);
-	const [titlePage, setTitlePage] = useState("Detalle Tipo de Usuario");
+	const [titlePage, setTitlePage] = useState("Detalle Usuario");
 	const params = useParams();
 	useEffect(() => {
 		if (params.id) {
@@ -18,7 +18,7 @@ export default function UserTypeFormPage() {
 	});
 	return (
 		<Page titlePage={titlePage}>
-			<UserTypeForm id={currentId} />
+			<UsersForm id={currentId} />
 		</Page>
 	);
 }

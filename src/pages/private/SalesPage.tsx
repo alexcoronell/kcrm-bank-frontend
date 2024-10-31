@@ -1,7 +1,7 @@
-import { SalesTable } from "../components/Shared/SalesTable";
+import { SalesTable } from "../../components/Shared/SalesTable";
 
 /* Components */
-import Page from "../components/layouts/Page";
+import Page from "../../components/layouts/Page";
 
 /* Variables */
 const titleButton = "Nueva venta";

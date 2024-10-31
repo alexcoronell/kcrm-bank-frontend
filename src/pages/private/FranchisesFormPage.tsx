@@ -1,24 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "wouter";
 
-import UsersForm from "../components/Shared/UsersForm";
-/* Components */
-import Page from "../components/layouts/Page";
+import FranchisesForm from "../../components/Shared/FranchisesForm";
+import Page from "../../components/layouts/Page";
 
-export default function UsersFormPage() {
+export default function FranchisesFormPage() {
 	const [currentId, setCurrentId] = useState<number | null>(null);
-	const [titlePage, setTitlePage] = useState("Detalle Usuario");
+	const [titlePage, setTitlePage] = useState("Detalle Franquicia");
 	const params = useParams();
 	useEffect(() => {
 		if (params.id) {
 			setCurrentId(Number.parseInt(params.id));
 		} else {
-			setTitlePage("Crear Tipo de Usuario");
+			setTitlePage("Crear Franquicia");
 		}
 	});
 	return (
 		<Page titlePage={titlePage}>
-			<UsersForm id={currentId} />
+			<FranchisesForm id={currentId} />
 		</Page>
 	);
 }
