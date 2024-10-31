@@ -6,4 +6,6 @@ export interface CreateProductDto
     "id" | "createAt" | "updateAt" | "active" | "deleted"
   > {}
 
-export interface UpdateProductDto extends CreateProductDto {}
+export interface UpdateProductDto extends CreateProductDto {
+  active: boolean;
+}

@@ -42,8 +42,8 @@ export default function ProductsTable() {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
-  const columns = 6;
-  const titleColums = ["Nombre", "Tasa requerida", "Actualizado", "Activo"];
+  const titleColums = ["Nombre", "Tasa requerida", "Franquicia requerida","Actualizado", "Activo"];
+  const columns = titleColums.length + 2;
 
   useEffect(() => {
     fetchData(page, limit);
@@ -128,10 +128,11 @@ export default function ProductsTable() {
                   <TableCell>{item.id}</TableCell>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.rateRequired ? "Sí" : "No"}</TableCell>
+                  <TableCell>{item.franchiseRequired ? "Sí" : "No"}</TableCell>
                   <TableCell>{formatDateTime(item.createAt)}</TableCell>
                   <TableCell>{formatDateTime(item.updateAt)}</TableCell>
                   <TableCell className="action-buttons">
-                    <Link href={`/user-types/detail/${item.id}`}>
+                    <Link href={`/products/detail/${item.id}`}>
                       <Button variant="light">
                         <EyeIcon classes="size-3" />
                       </Button>
