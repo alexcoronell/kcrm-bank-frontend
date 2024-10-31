@@ -6,6 +6,7 @@ import Header from "./components/Shared/Header";
 
 import FranchisesFormPage from "./pages/private/FranchisesFormPage";
 /* Pages */
+import DashboardPage from "./pages/private/DashboardPage";
 import FranchisesPage from "./pages/private/FranchisesPage";
 import LoginPage from "./pages/public/LoginPage";
 import MainPage from "./pages/private/MainPage";
@@ -26,11 +27,12 @@ function App() {
       <Header />
       <Router>
         <Route path="/" component={MainPage} />
+        <Route path="/dashboard" component={DashboardPage} />
         <Route path="/franchises" component={FranchisesPage} />
         <Route path="/franchises/create" component={FranchisesFormPage} />
         <Route path="/franchises/detail/:id" component={FranchisesFormPage} />
         <Route path="/login" component={LoginPage} />
-		<Route path="/products" component={ProductsPage} />
+        <Route path="/products" component={ProductsPage} />
         <Route path="/products/create" component={ProductsFormPage} />
         <Route path="/products/detail/:id" component={ProductsFormPage} />
         <Route path="/sales" component={SalesPage} />
