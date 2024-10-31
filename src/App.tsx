@@ -9,6 +9,8 @@ import FranchisesFormPage from "./pages/private/FranchisesFormPage";
 import FranchisesPage from "./pages/private/FranchisesPage";
 import LoginPage from "./pages/public/LoginPage";
 import MainPage from "./pages/private/MainPage";
+import ProductsPage from "./pages/private/ProductsPage";
+import ProductsFormPage from "./pages/private/ProductsFormPage";
 import SalesFormPage from "./pages/private/SalesFormPage";
 import SalesPage from "./pages/private/SalesPage";
 import UserTypeFormPage from "./pages/private/UserTypeFormPage";
@@ -24,7 +26,13 @@ function App() {
       <Header />
       <Router>
         <Route path="/" component={MainPage} />
+        <Route path="/franchises" component={FranchisesPage} />
+        <Route path="/franchises/create" component={FranchisesFormPage} />
+        <Route path="/franchises/detail/:id" component={FranchisesFormPage} />
         <Route path="/login" component={LoginPage} />
+		<Route path="/products" component={ProductsPage} />
+        <Route path="/products/create" component={ProductsFormPage} />
+        <Route path="/products/detail/:id" component={ProductsFormPage} />
         <Route path="/sales" component={SalesPage} />
         <Route path="/sales/detail" component={SalesFormPage} />
         <Route path="/sales/create/:id" component={SalesFormPage} />
@@ -34,9 +42,6 @@ function App() {
         <Route path="/user-types" component={UserTypePage} />
         <Route path="/user-types/create" component={UserTypeFormPage} />
         <Route path="/user-types/detail/:id" component={UserTypeFormPage} />
-        <Route path="/franchises" component={FranchisesPage} />
-        <Route path="/franchises/create" component={FranchisesFormPage} />
-        <Route path="/franchises/detail/:id" component={FranchisesFormPage} />
       </Router>
       <Footer />
     </div>
