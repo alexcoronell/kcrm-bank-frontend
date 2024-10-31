@@ -13,7 +13,7 @@ export default function ProductsFormPage() {
 		if (params.id) {
 			setCurrentId(Number.parseInt(params.id));
 		} else {
-			setTitlePage("Crear Franquicia");
+			setTitlePage("Crear Product");
 		}
 	});
 	return (
