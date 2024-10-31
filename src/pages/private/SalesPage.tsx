@@ -7,7 +7,7 @@ import Page from "../../components/layouts/Page";
 const titleButton = "Nueva venta";
 const url = "/sales/create";
 
-export default function UsersPage() {
+export default function SalesPage() {
   return (
     <Page titlePage="Ventas" titleButton={titleButton} urlButton={url}>
       <SalesTable />
