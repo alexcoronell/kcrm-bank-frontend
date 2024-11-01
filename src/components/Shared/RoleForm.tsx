@@ -28,7 +28,7 @@ interface Props {
 
 export default function RoleForm({ id }: Props) {
   const [statusMode, setStatusMode] = useState<StatusMode>("create");
-  const [requestStatus, setRequestStatus] = useState<RequestStatus>("failed");
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
   const [name, setName] = useState<string>("");
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
