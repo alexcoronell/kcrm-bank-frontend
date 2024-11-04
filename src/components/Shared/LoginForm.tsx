@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { navigate } from "wouter/use-browser-location";
+
+import { AppContext } from "../../context";
 
 /* Components */
 import { Button } from "../ui/Button";
@@ -18,6 +20,7 @@ import { validateEmailHelper } from "../../core/helpers/validators.helper";
 import type { LoginDto } from "../../core/dtos/Login.dto";
 
 export default function LoginForm() {
+  const context = useContext(AppContext);
   const [email, setEmail] = useState("jdoe@email.com");
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorEmailMessage, setErrorEmailMessage] = useState("");
@@ -61,9 +64,12 @@ export default function LoginForm() {
         email,
         password,
       };
-      const res = await AuthService.login(dto);
-      navigate("/dashboard")
-      console.log(res.data);
+      const { data } = await AuthService.login(dto);
+      navigate("/dashboard");
+      const { isAdmin, publicUser } = data;
+      context.setCurrentUser(publicUser);
+      context.setIsAuthenticated(true);
+      context.setIsAdmin(isAdmin);
     } catch (e) {
       const { status, message } = e as any;
       console.error(message);
@@ -83,7 +89,7 @@ export default function LoginForm() {
             name="email"
             type="email"
             value={email}
-            onChange={({target}) => setEmail(target.value)}
+            onChange={({ target }) => setEmail(target.value)}
             onBlur={validateEmail}
           />{" "}
           <ErrorInputMessage
@@ -101,7 +107,7 @@ export default function LoginForm() {
             name="password"
             type="password"
             value={password}
-            onChange={({target}) => setPassword(target.value)}
+            onChange={({ target }) => setPassword(target.value)}
             onBlur={validatePassword}
           />{" "}
           <ErrorInputMessage
