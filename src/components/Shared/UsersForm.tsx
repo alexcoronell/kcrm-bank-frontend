@@ -36,7 +36,7 @@ import RoleService from "../../core/services/Role.service";
 import { validateEmailHelper } from "../../core/helpers/validators.helper";
 
 interface Props {
-  id: Role["id"] | null;
+  id: User["id"] | null;
 }
 
 export default function UsersForm({ id }: Props) {
