@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import { navigate } from "wouter/use-browser-location";
+
 export default function MainPage() {
-	return <h1 className="text-3xl font-bold underline">Hello world! MAIN</h1>;
+	useEffect(() => navigate('/login'), [])
+	return <h1 className="text-3xl font-bold underline">KCRM Bank</h1>;
 }

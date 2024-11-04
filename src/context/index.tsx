@@ -3,18 +3,16 @@ import type { User } from "../core/interfaces/User.interface";
 
 export const AppContext = createContext<{
   currentUser: User | null;
-  setCurrentUser: (user: User | null) => void;
   isAuthenticated: boolean;
-  setIsAuthenticated: (authenticated: boolean) => void;
   isAdmin: boolean;
-  setIsAdmin: (isAdmin: boolean) => void;
+  login: (user: User, isAdmin: boolean) => void;
+  logout: () => void
 }>({
   currentUser: null,
-  setCurrentUser: () => {},
   isAuthenticated: false,
-  setIsAuthenticated: () => {},
   isAdmin: false,
-  setIsAdmin: () => {},
+  login: () => {},
+  logout: () => {},
 });
 
 interface Props {
@@ -25,15 +23,26 @@ export const AppProvider = ({ children }: Props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const login = (user: User, isAdmin: boolean) => {
+    setCurrentUser(user)
+    setIsAdmin(isAdmin)
+    setIsAuthenticated(true)
+  }
+
+  const logout = () => {
+    setCurrentUser(null)
+    setIsAdmin(false)
+    setIsAuthenticated(false)
+  }
+
   return (
     <AppContext.Provider
       value={{
         currentUser,
-        setCurrentUser,
         isAuthenticated,
-        setIsAuthenticated,
         isAdmin,
-        setIsAdmin,
+        login,
+        logout
       }}
     >
       {children}

@@ -9,4 +9,8 @@ export default class AuthService {
   static login = async (dto: LoginDto) => {
     return await axios.post(`${url}/login`, dto, { withCredentials: true });
   };
+
+  static logout = async() => {
+    return await axios.get(`${url}/logout`)
+  }
 }

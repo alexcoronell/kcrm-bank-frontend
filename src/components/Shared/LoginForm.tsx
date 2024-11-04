@@ -25,7 +25,7 @@ export default function LoginForm() {
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorEmailMessage, setErrorEmailMessage] = useState("");
 
-  const [password, setPassword] = useState("55891331");
+  const [password, setPassword] = useState("12345678");
   const [errorPassword, setErrorPassword] = useState(false);
   const [errorPasswordMessage, setErrorPasswordMessage] = useState("");
 
@@ -67,9 +67,7 @@ export default function LoginForm() {
       const { data } = await AuthService.login(dto);
       navigate("/dashboard");
       const { isAdmin, publicUser } = data;
-      context.setCurrentUser(publicUser);
-      context.setIsAuthenticated(true);
-      context.setIsAdmin(isAdmin);
+      context.login(publicUser, isAdmin);
     } catch (e) {
       const { status, message } = e as any;
       console.error(message);
