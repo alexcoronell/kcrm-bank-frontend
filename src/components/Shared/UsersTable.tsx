@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import EyeIcon from "../icons/EyeIcon";
 import TrashIcon from "../icons/TrashIcon";
+import TextInputPassword from "../icons/TextInputPassword";
 import { Button } from "../ui/Button";
 import { Label } from "../ui/Label";
 import {
@@ -44,7 +45,9 @@ export function UsersTable() {
 	const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
 	const titleColumns = ["Nombre", "Email", "Creado", "Actualizado", "Activo"];
 	const columns = titleColumns.length + 2;
-	useEffect(() => {
+	
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+		useEffect(() => {
 		fetchData();
 	}, [page, limit]);
 
@@ -84,7 +87,9 @@ export function UsersTable() {
 	 * Change number of items per page
 	 * @param e
 	 */
-	const handleChangeLimit = (e: any) => {
+	
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+const  handleChangeLimit = (e: any) => {
 		setLimit(e);
 	};
 
@@ -158,14 +163,19 @@ export function UsersTable() {
 									<TableCell className="action-buttons">
 										<Link href={`/users/detail/${item.id}`}>
 											<Button variant="light">
-												<EyeIcon classes="size-3" />
+												<EyeIcon classes="size-4" />
+											</Button>
+										</Link>
+										<Link href={`/users/password/${item.id}`}>
+											<Button variant="light">
+												<TextInputPassword classes="size-4" />
 											</Button>
 										</Link>
 										<Button
 											variant="destructive"
 											onClick={() => handleDelete(item.id)}
 										>
-											<TrashIcon classes="size-3" />
+											<TrashIcon classes="size-4" />
 										</Button>
 									</TableCell>
 								</TableRow>

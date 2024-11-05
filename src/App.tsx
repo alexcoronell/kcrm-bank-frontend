@@ -19,6 +19,7 @@ import SalesPage from "./pages/private/SalesPage";
 import RolesFormPage from "./pages/private/RolesFormPage";
 import RolesPage from "./pages/private/RolesPage";
 import UsersFormPage from "./pages/private/UsersFormPage";
+import UsersPasswordFormPage from "./pages/private/UsersPasswordFormPage";
 import UsersPage from "./pages/private/UsersPage";
 
 /* Styles */
@@ -45,6 +46,7 @@ function App() {
 					<Route path="/users" component={UsersPage} />
 					<Route path="/users/create" component={UsersFormPage} />
 					<Route path="/users/detail/:id" component={UsersFormPage} />
+					<Route path="/users/password/:id" component={UsersPasswordFormPage} />
 					<Route path="/roles" component={RolesPage} />
 					<Route path="/roles/create" component={RolesFormPage} />
 					<Route path="/roles/detail/:id" component={RolesFormPage} />
