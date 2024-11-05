@@ -10,7 +10,11 @@ export default class AuthService {
     return await axios.post(`${url}/login`, dto, { withCredentials: true });
   };
 
-  static logout = async() => {
-    return await axios.get(`${url}/logout`)
-  }
+  static logout = async () => {
+    return await axios.get(`${url}/logout`);
+  };
+
+  static verifySession = async () => {
+    return await axios.get(`${url}/verify-session`, { withCredentials: true });
+  };
 }

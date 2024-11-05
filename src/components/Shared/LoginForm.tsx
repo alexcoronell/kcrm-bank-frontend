@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { navigate } from "wouter/use-browser-location";
 
 import { AppContext } from "../../context";
@@ -18,6 +18,11 @@ import AuthService from "../../core/services/auth.service";
 /* Helpers */
 import { validateEmailHelper } from "../../core/helpers/validators.helper";
 import type { LoginDto } from "../../core/dtos/Login.dto";
+
+interface Responses {
+  status: number;
+  message: string;
+}
 
 export default function LoginForm() {
   const context = useContext(AppContext);
@@ -69,7 +74,7 @@ export default function LoginForm() {
       const { isAdmin, publicUser } = data;
       context.login(publicUser, isAdmin);
     } catch (e) {
-      const { status, message } = e as any;
+      const { status, message } = e as Responses;
       console.error(message);
       if (status === 404) alert("Login incorrect");
     }
