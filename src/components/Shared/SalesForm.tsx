@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "wouter";
 
 import { Button } from "../ui/Button";
@@ -124,7 +124,7 @@ export default function SalesForm() {
 
 	const clean = () => {
 		setProduct(null);
-		setErrorProduct("");
+		setErrorProduct(false);
 
 		setFranchise(null);
 		setErrorFranchise(false);
@@ -278,6 +278,22 @@ export default function SalesForm() {
 							errorStatus={errorQuotaRequested}
 						/>
 					</div>
+					{/* Quota Requested */}
+					<div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
+						{" "}
+						<Label htmlFor="currentUser">Creado por</Label>{" "}
+						<Input
+							id="currentUser"
+							name="currentUser"
+							type="text"
+							value={context.currentUser?.name}
+							readOnly
+						/>{" "}
+						<ErrorInputMessage
+							message={"Error, no se ha cargado el usuario actual"}
+							errorStatus={!context.currentUser}
+						/>
+					</div>
 				</div>
 
 				<div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
@@ -300,7 +316,7 @@ export default function SalesForm() {
 							Cancelar
 						</Button>
 					) : (
-						<Link href="/users" className="w-full">
+						<Link href="/sales" className="w-full">
 							<Button type="button" className="w-full" variant="light">
 								Volver
 							</Button>
