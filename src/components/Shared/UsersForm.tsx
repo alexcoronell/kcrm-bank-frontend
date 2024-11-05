@@ -18,7 +18,7 @@ import { Switch } from "../ui/Switch";
 import SelectItemAlternative from "./SelectItemAlternative";
 
 /* Interfaces */
-import { User } from "../../core/interfaces/User.interface";
+import type{ User } from "../../core/interfaces/User.interface";
 import type { Role } from "../../core/interfaces/Role.interface";
 
 /* DTO's */
@@ -86,6 +86,7 @@ export default function UsersForm({ id }: Props) {
     } catch (err) {
       setShowRequestMessage(true);
       setRequestStatus("failed");
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const { status } = err as any;
       if (status === 404) {
         setRequestMessage("El usuario solicitado no existe");
@@ -110,11 +111,14 @@ export default function UsersForm({ id }: Props) {
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     getRoles();
   }, []);
 
-  useEffect(() => {
+  
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
     if (id) {
       get();
       setStatusMode("detail");
@@ -149,11 +153,10 @@ export default function UsersForm({ id }: Props) {
       );
     } else if (password !== confirmPassword) {
       const message = "Las contraseñas no coinciden";
-      setErrorEmailMessage(message);
-      setErrorConfirmPasswordMessage(message);
-      setErrorPasswordMessage(message);
       setErrorPassword(true);
-      setErrorConfirmPassword(true);
+      setErrorConfirmPassword(true)
+      setErrorPasswordMessage(message);
+      setErrorConfirmPasswordMessage(message);
     } else {
       setErrorPassword(false);
       setErrorConfirmPassword(false);
@@ -166,7 +169,9 @@ export default function UsersForm({ id }: Props) {
 	}, 1000);
   };
 
-  const handleChangeRole = (e: any) => {
+  
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    const handleChangeRole = (e: any) => {
     validateRoleId();
     setRoleId(e);
   };
