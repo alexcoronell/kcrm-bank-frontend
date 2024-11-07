@@ -48,6 +48,7 @@ export default function RoleForm({ id }: Props) {
     } catch (err) {
       setShowRequestMessage(true);
       setRequestStatus("failed");
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const { status } = err as any;
       if (status === 404) {
         setRequestMessage("El rol solicitado no existe");
@@ -61,6 +62,7 @@ export default function RoleForm({ id }: Props) {
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (id) {
       get(id);
@@ -126,94 +128,94 @@ export default function RoleForm({ id }: Props) {
       setRequestMessage("Rol no pudo ser guardado");
     } finally {
       setShowRequestMessage(true);
-      setTimeout(() => setShowRequestMessage(false), 2000);
+      setTimeout(() => setShowRequestMessage(false), 5000);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <form onSubmit={handleSubmit}>
-        <div className="mx-auto max-w-xs space-y-2 my-6">
-          {" "}
-          <Label htmlFor="name">Ingresa el nombre</Label>{" "}
-          <Input
-            placeholder="Ingresa el nombre"
-            id="name"
-            name="name"
-            type="text"
-            value={name}
-            disabled={requestStatus === "loading"}
-            readOnly={statusMode === "detail"}
-            onChange={(e) => setName(e.target.value)}
-            onBlur={validateName}
-          />{" "}
-          <ErrorInputMessage
-            message="El nombre del Rol es obligatorio"
-            errorStatus={errorName}
-          />
-        </div>
+    <>
+      <div className="max-w-md mx-auto">
+        <form onSubmit={handleSubmit}>
+          <div className="mx-auto max-w-xs space-y-2 my-6">
+            {" "}
+            <Label htmlFor="name">Ingresa el nombre</Label>{" "}
+            <Input
+              placeholder="Ingresa el nombre"
+              id="name"
+              name="name"
+              type="text"
+              value={name}
+              disabled={requestStatus === "loading"}
+              readOnly={statusMode === "detail"}
+              onChange={(e) => setName(e.target.value)}
+              onBlur={validateName}
+            />{" "}
+            <ErrorInputMessage
+              message="El nombre del Rol es obligatorio"
+              errorStatus={errorName}
+            />
+          </div>
 
-        <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-          {" "}
-          <Switch
-            id="isAdmin"
-            checked={isAdmin}
-            onCheckedChange={setIsAdmin}
-            disabled={statusMode === "detail"}
-          />{" "}
-          <Label htmlFor="activateUser">
-            Establecer usuario administrativo
-          </Label>{" "}
-        </div>
-
-        {statusMode !== "create" && (
           <div className="flex items-center justify-center gap-2 my-6 md:py-3">
             {" "}
             <Switch
-              id="activateUser"
-              checked={active}
-              onCheckedChange={setActive}
+              id="isAdmin"
+              checked={isAdmin}
+              onCheckedChange={setIsAdmin}
               disabled={statusMode === "detail"}
             />{" "}
             <Label htmlFor="activateUser">
-              Activar / Desactivar Role
+              Establecer usuario administrativo
             </Label>{" "}
           </div>
-        )}
 
-        <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
-          {statusMode === "detail" ? (
-            <Button type="button" className="w-full" onClick={changeEdit}>
-              Editar
-            </Button>
-          ) : (
-            <Button type="submit" className="w-full">
-              Guardar
-            </Button>
+          {statusMode !== "create" && (
+            <div className="flex items-center justify-center gap-2 my-6 md:py-3">
+              {" "}
+              <Switch
+                id="activateUser"
+                checked={active}
+                onCheckedChange={setActive}
+                disabled={statusMode === "detail"}
+              />{" "}
+              <Label htmlFor="activateUser">Activar / Desactivar Role</Label>{" "}
+            </div>
           )}
-          {statusMode === "edit" ? (
-            <Button
-              type="button"
-              className="w-full"
-              variant="light"
-              onClick={cancel}
-            >
-              Cancelar
-            </Button>
-          ) : (
-            <Link href="/roles" className="w-full">
-              <Button type="button" className="w-full" variant="light">
-                Volver
+
+          <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
+            {statusMode === "detail" ? (
+              <Button type="button" className="w-full" onClick={changeEdit}>
+                Editar
               </Button>
-            </Link>
-          )}
-        </div>
-      </form>
+            ) : (
+              <Button type="submit" className="w-full">
+                Guardar
+              </Button>
+            )}
+            {statusMode === "edit" ? (
+              <Button
+                type="button"
+                className="w-full"
+                variant="light"
+                onClick={cancel}
+              >
+                Cancelar
+              </Button>
+            ) : (
+              <Link href="/roles" className="w-full">
+                <Button type="button" className="w-full" variant="light">
+                  Volver
+                </Button>
+              </Link>
+            )}
+          </div>
+        </form>
+      </div>
       <RequestMessage
         message={requestMessage}
         status={requestStatus}
         showMessage={showRequestMessage}
       />
-    </div>
+    </>
   );
 }

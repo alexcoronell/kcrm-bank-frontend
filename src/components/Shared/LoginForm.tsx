@@ -8,6 +8,7 @@ import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Label } from "../ui/Label";
 import { ErrorInputMessage } from "../ui/ErrorInputMessage";
+import { RequestMessage } from "../ui/RequestMessage";
 
 /* Types */
 import type { RequestStatus } from "../../core/types/RequestStatus.type";
@@ -35,6 +36,9 @@ export default function LoginForm() {
   const [errorPasswordMessage, setErrorPasswordMessage] = useState("");
 
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
+
+  const requestMessage = "Usuario o contraseña no validos";
+  const [showRequestMessage, setShowRequestMessage] = useState<boolean>(false);
 
   const validateEmail = () => {
     if (email.length === 0 || !email) {
@@ -74,60 +78,70 @@ export default function LoginForm() {
       const { isAdmin, publicUser } = data;
       context.login(publicUser, isAdmin);
     } catch (e) {
-      const { status, message } = e as Responses;
-      console.error(message);
-      if (status === 404) alert("Login incorrect");
+      const { status } = e as Responses;
+      setRequestStatus("failed");
+      if (status === 404) setShowRequestMessage(true);
+      setTimeout(() => {
+        setShowRequestMessage(false);
+      }, 5000);
     }
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div className="mx-auto max-w-xs space-y-2 my-6">
-          {" "}
-          <Label htmlFor="email">Ingresa tu Email</Label>{" "}
-          <Input
-            placeholder="Ingresa tu email"
-            id="email"
-            name="email"
-            type="email"
-            value={email}
-            onChange={({ target }) => setEmail(target.value)}
-            onBlur={validateEmail}
-          />{" "}
-          <ErrorInputMessage
-            message={errorEmailMessage}
-            errorStatus={errorEmail}
-          />
-        </div>
+    <>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <div className="mx-auto max-w-xs space-y-2 my-6">
+            {" "}
+            <Label htmlFor="email">Ingresa tu Email</Label>{" "}
+            <Input
+              placeholder="Ingresa tu email"
+              id="email"
+              name="email"
+              type="email"
+              value={email}
+              onChange={({ target }) => setEmail(target.value)}
+              onBlur={validateEmail}
+            />{" "}
+            <ErrorInputMessage
+              message={errorEmailMessage}
+              errorStatus={errorEmail}
+            />
+          </div>
 
-        <div className="mx-auto max-w-xs space-y-2 my-6">
-          {" "}
-          <Label htmlFor="email">Ingresa tu Contraseña</Label>{" "}
-          <Input
-            placeholder="Enter password"
-            id="password"
-            name="password"
-            type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-            onBlur={validatePassword}
-          />{" "}
-          <ErrorInputMessage
-            message={errorPasswordMessage}
-            errorStatus={errorPassword}
-          />
-        </div>
+          <div className="mx-auto max-w-xs space-y-2 my-6">
+            {" "}
+            <Label htmlFor="email">Ingresa tu Contraseña</Label>{" "}
+            <Input
+              placeholder="Enter password"
+              id="password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+              onBlur={validatePassword}
+            />{" "}
+            <ErrorInputMessage
+              message={errorPasswordMessage}
+              errorStatus={errorPassword}
+            />
+          </div>
 
-        <div className="mx-auto max-w-xs my-6 flex items-center justify-center gap-x-3">
-          <Button type="submit" className="w-full">
-            Ingresar
-          </Button>
-          <Button type="button" className="w-full" variant="light">
-            Limpiar
-          </Button>
-        </div>
-      </form>
-    </div>
+          <div className="mx-auto max-w-xs my-6 flex items-center justify-center gap-x-3">
+            <Button type="submit" className="w-full">
+              Ingresar
+            </Button>
+            <Button type="button" className="w-full" variant="light">
+              Limpiar
+            </Button>
+          </div>
+        </form>
+      </div>
+      <RequestMessage
+        message={requestMessage}
+        status={requestStatus}
+        showMessage={showRequestMessage}
+      />
+    </>
   );
 }

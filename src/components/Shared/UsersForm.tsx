@@ -18,7 +18,7 @@ import { Switch } from "../ui/Switch";
 import SelectItemAlternative from "./SelectItemAlternative";
 
 /* Interfaces */
-import type{ User } from "../../core/interfaces/User.interface";
+import type { User } from "../../core/interfaces/User.interface";
 import type { Role } from "../../core/interfaces/Role.interface";
 
 /* DTO's */
@@ -116,9 +116,8 @@ export default function UsersForm({ id }: Props) {
     getRoles();
   }, []);
 
-  
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
+  useEffect(() => {
     if (id) {
       get();
       setStatusMode("detail");
@@ -154,7 +153,7 @@ export default function UsersForm({ id }: Props) {
     } else if (password !== confirmPassword) {
       const message = "Las contraseñas no coinciden";
       setErrorPassword(true);
-      setErrorConfirmPassword(true)
+      setErrorConfirmPassword(true);
       setErrorPasswordMessage(message);
       setErrorConfirmPasswordMessage(message);
     } else {
@@ -165,13 +164,12 @@ export default function UsersForm({ id }: Props) {
 
   const validateRoleId = () => {
     setTimeout(() => {
-		roleId === "" || !roleId ? setErrorRoleId(true) : setErrorRoleId(false);
-	}, 1000);
+      roleId === "" || !roleId ? setErrorRoleId(true) : setErrorRoleId(false);
+    }, 1000);
   };
 
-  
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const handleChangeRole = (e: any) => {
+  const handleChangeRole = (e: any) => {
     validateRoleId();
     setRoleId(e);
   };
@@ -254,174 +252,186 @@ export default function UsersForm({ id }: Props) {
   };
 
   return (
-    <div className="UsersForm max-w-[800px] mx-auto">
-      <form onSubmit={handleSubmit}>
-        <div className="md:grid md:grid-cols-2 md:gap-x-3">
-          {/* Name */}
-          <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-            {" "}
-            <Label htmlFor="name">Nombre</Label>{" "}
-            <Input
-              placeholder="Ingresa tu nombre"
-              id="name"
-              name="name"
-              type="text"
-              value={name}
-              disabled={requestStatus === "loading"}
-              readOnly={statusMode === "detail"}
-              onChange={(e) => setName(e.target.value)}
-              onBlur={validateName}
-            />{" "}
-            <ErrorInputMessage
-              message={"El nombre del usuario es obligatorio"}
-              errorStatus={errorName}
-            />
-          </div>
-
-          {/* Email */}
-          <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-            {" "}
-            <Label htmlFor="email">Email</Label>{" "}
-            <Input
-              placeholder="Ingresa tu email"
-              id="email"
-              name="email"
-              type="email"
-              value={email}
-              disabled={requestStatus === "loading"}
-              readOnly={statusMode === "detail"}
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={validateEmail}
-            />{" "}
-            <ErrorInputMessage
-              message={errorEmailMessage}
-              errorStatus={errorEmail}
-            />
-          </div>
-        </div>
-
-        {statusMode === "create" && (
-          <div className="md:grid md:grid-cols-2 md:gap-x-3 ">
-            {/* Password */}
+    <>
+      <div className="UsersForm max-w-[800px] mx-auto">
+        <form onSubmit={handleSubmit}>
+          <div className="md:grid md:grid-cols-2 md:gap-x-3">
+            {/* Name */}
             <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
               {" "}
-              <Label htmlFor="password">Contraseña</Label>{" "}
+              <Label htmlFor="name">Nombre</Label>{" "}
               <Input
-                name="password"
-                id="password"
-                placeholder="Ingresa la contraseña"
-                type="password"
-                value={password}
+                placeholder="Ingresa tu nombre"
+                id="name"
+                name="name"
+                type="text"
+                value={name}
                 disabled={requestStatus === "loading"}
-                onChange={(e) => setPassword(e.target.value)}
-                onBlur={validatePassword}
+                readOnly={statusMode === "detail"}
+                onChange={(e) => setName(e.target.value)}
+                onBlur={validateName}
               />{" "}
               <ErrorInputMessage
-                message={errorPasswordMessage}
-                errorStatus={errorPassword}
+                message={"El nombre del usuario es obligatorio"}
+                errorStatus={errorName}
               />
             </div>
 
-            {/* Confirm Password */}
+            {/* Email */}
             <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
               {" "}
-              <Label htmlFor="confirm-password">
-                Confirma tu contraseña
-              </Label>{" "}
+              <Label htmlFor="email">Email</Label>{" "}
               <Input
-                name="confirmPassword"
-                id="confirmPassword"
-                placeholder="Ingresa nuevamente la contraseña"
-                type="password"
-                value={confirmPassword}
+                placeholder="Ingresa tu email"
+                id="email"
+                name="email"
+                type="email"
+                value={email}
                 disabled={requestStatus === "loading"}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                onBlur={validatePassword}
+                readOnly={statusMode === "detail"}
+                onChange={(e) => setEmail(e.target.value)}
+                onBlur={validateEmail}
               />{" "}
               <ErrorInputMessage
-                message={errorConfirmPasswordMessage}
-                errorStatus={errorConfirmPassword}
+                message={errorEmailMessage}
+                errorStatus={errorEmail}
               />
             </div>
           </div>
-        )}
 
-        <div className="md:grid md:grid-cols-2 md:gap-x-3 md:items-center">
-          <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-            <Label htmlFor="roleId">Rol</Label>{" "}
-            <Select onValueChange={handleChangeRole} value={roleId?.toString()}>
-              {" "}
-              <SelectTrigger id="roleId" className="mt-2">
+          {statusMode === "create" && (
+            <div className="md:grid md:grid-cols-2 md:gap-x-3 ">
+              {/* Password */}
+              <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
                 {" "}
-                <SelectValue placeholder="Select" />{" "}
-              </SelectTrigger>{" "}
-              <SelectContent>
-                {roles.length > 0 && requestStatusRoles === "success" ? (
-                  <>
-                    {" "}
-                    {roles.map((item, index) => (
-                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                      <SelectItem key={index} value={item.id.toString()}>
-                        {item.name}
-                      </SelectItem>
-                    ))}
-                  </>
-                ) : (
-                  <SelectItemAlternative
-                    total={roles.length}
-                    status={requestStatusRoles}
-                  />
-                )}
-              </SelectContent>
-            </Select>
-            <ErrorInputMessage
-              message={"El Rol es obligatorio"}
-              errorStatus={errorRoleId}
-            />
-          </div>
+                <Label htmlFor="password">Contraseña</Label>{" "}
+                <Input
+                  name="password"
+                  id="password"
+                  placeholder="Ingresa la contraseña"
+                  type="password"
+                  value={password}
+                  disabled={requestStatus === "loading"}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onBlur={validatePassword}
+                />{" "}
+                <ErrorInputMessage
+                  message={errorPasswordMessage}
+                  errorStatus={errorPassword}
+                />
+              </div>
 
-          {statusMode !== "create" && (
-            <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-              {" "}
-              <Switch
-                id="activateUser"
-                checked={active}
-                onCheckedChange={setActive}
-                disabled={statusMode === "detail"}
-              />{" "}
-              <Label htmlFor="activateUser">Activar / Desactivar Usuario</Label>{" "}
+              {/* Confirm Password */}
+              <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
+                {" "}
+                <Label htmlFor="confirm-password">
+                  Confirma tu contraseña
+                </Label>{" "}
+                <Input
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  placeholder="Ingresa nuevamente la contraseña"
+                  type="password"
+                  value={confirmPassword}
+                  disabled={requestStatus === "loading"}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onBlur={validatePassword}
+                />{" "}
+                <ErrorInputMessage
+                  message={errorConfirmPasswordMessage}
+                  errorStatus={errorConfirmPassword}
+                />
+              </div>
             </div>
           )}
-        </div>
 
-        <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
-          {statusMode === "detail" ? (
-            <Button type="button" className="w-full" onClick={changeEdit}>
-              Editar
-            </Button>
-          ) : (
-            <Button type="submit" className="w-full">
-              Guardar
-            </Button>
-          )}
-          {statusMode === "edit" ? (
-            <Button
-              type="button"
-              className="w-full"
-              variant="light"
-              onClick={cancel}
-            >
-              Cancelar
-            </Button>
-          ) : (
-            <Link href="/users" className="w-full">
-              <Button type="button" className="w-full" variant="light">
-                Volver
+          <div className="md:grid md:grid-cols-2 md:gap-x-3 md:items-center">
+            <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
+              <Label htmlFor="roleId">Rol</Label>{" "}
+              <Select
+                onValueChange={handleChangeRole}
+                value={roleId?.toString()}
+              >
+                {" "}
+                <SelectTrigger id="roleId" className="mt-2">
+                  {" "}
+                  <SelectValue placeholder="Select" />{" "}
+                </SelectTrigger>{" "}
+                <SelectContent>
+                  {roles.length > 0 && requestStatusRoles === "success" ? (
+                    <>
+                      {" "}
+                      {roles.map((item, index) => (
+                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                        <SelectItem key={index} value={item.id.toString()}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </>
+                  ) : (
+                    <SelectItemAlternative
+                      total={roles.length}
+                      status={requestStatusRoles}
+                    />
+                  )}
+                </SelectContent>
+              </Select>
+              <ErrorInputMessage
+                message={"El Rol es obligatorio"}
+                errorStatus={errorRoleId}
+              />
+            </div>
+
+            {statusMode !== "create" && (
+              <div className="flex items-center justify-center gap-2 my-6 md:py-3">
+                {" "}
+                <Switch
+                  id="activateUser"
+                  checked={active}
+                  onCheckedChange={setActive}
+                  disabled={statusMode === "detail"}
+                />{" "}
+                <Label htmlFor="activateUser">
+                  Activar / Desactivar Usuario
+                </Label>{" "}
+              </div>
+            )}
+          </div>
+
+          <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
+            {statusMode === "detail" ? (
+              <Button type="button" className="w-full" onClick={changeEdit}>
+                Editar
               </Button>
-            </Link>
-          )}
-        </div>
-      </form>
-    </div>
+            ) : (
+              <Button type="submit" className="w-full">
+                Guardar
+              </Button>
+            )}
+            {statusMode === "edit" ? (
+              <Button
+                type="button"
+                className="w-full"
+                variant="light"
+                onClick={cancel}
+              >
+                Cancelar
+              </Button>
+            ) : (
+              <Link href="/users" className="w-full">
+                <Button type="button" className="w-full" variant="light">
+                  Volver
+                </Button>
+              </Link>
+            )}
+          </div>
+        </form>
+      </div>
+      <RequestMessage
+        message={requestMessage}
+        status={requestStatus}
+        showMessage={showRequestMessage}
+      />
+    </>
   );
 }
