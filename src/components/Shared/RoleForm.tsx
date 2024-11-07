@@ -124,8 +124,14 @@ export default function RoleForm({ id }: Props) {
       }
       setRequestStatus("success");
     } catch (e) {
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      const { status } = e as any;
+      if (status === 409) {
+        setRequestMessage("Rol ya existe en nuestros registros");
+      } else {
+        setRequestMessage("Rol no pudo ser guardado");
+      }
       setRequestStatus("failed");
-      setRequestMessage("Rol no pudo ser guardado");
     } finally {
       setShowRequestMessage(true);
       setTimeout(() => setShowRequestMessage(false), 5000);

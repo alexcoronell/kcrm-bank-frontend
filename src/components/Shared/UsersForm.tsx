@@ -229,7 +229,6 @@ export default function UsersForm({ id }: Props) {
         setRequestMessage("Usuario guardado correctamente");
         clean();
       } else {
-        console.log("update");
         const dto: UpdateUserDto = {
           name,
           email,
@@ -243,8 +242,14 @@ export default function UsersForm({ id }: Props) {
       }
       setRequestStatus("success");
     } catch (e) {
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      const { status } = e as any;
+      if (status === 409) {
+        setRequestMessage("El email ya existe en nuestros registros");
+      } else {
+        setRequestMessage("Usuario no pudo ser guardado");
+      }
       setRequestStatus("failed");
-      setRequestMessage("Usuario no pudo ser guardado");
     } finally {
       setShowRequestMessage(true);
       setTimeout(() => setShowRequestMessage(false), 2000);

@@ -123,8 +123,14 @@ export default function FranchisesForm({ id }: Props) {
       }
       setRequestStatus("success");
     } catch (e) {
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      const { status } = e as any;
+      if (status === 409) {
+        setRequestMessage("Franquicia ya existe en nuestros registros");
+      } else {
+        setRequestMessage("Franquicia no pudo ser guardada");
+      }
       setRequestStatus("failed");
-      setRequestMessage("Franquicia no pudo ser guardada");
     } finally {
       setShowRequestMessage(true);
       setTimeout(() => setShowRequestMessage(false), 2000);

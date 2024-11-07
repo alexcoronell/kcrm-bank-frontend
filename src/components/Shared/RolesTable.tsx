@@ -50,7 +50,9 @@ export function RolesTable() {
     "Actualizado",
     "Activo",
   ];
-  useEffect(() => {
+  
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
     fetchData();
   }, [page, limit]);
 
@@ -67,7 +69,6 @@ export function RolesTable() {
       setRoles(items);
       setTotal(count);
       setTotalPages(Math.ceil(total / limit));
-      console.log(items);
     } catch (e) {
       setRequestStatus("failed");
     }
@@ -77,7 +78,7 @@ export function RolesTable() {
    * Delete the item
    * @param id
    */
-  const handleDelete = async (id: UserType["id"]) => {
+  const handleDelete = async (id: Role["id"]) => {
     try {
       const response = await RoleService.delete(id);
       fetchData();

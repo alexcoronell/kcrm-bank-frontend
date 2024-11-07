@@ -57,7 +57,7 @@ export default function ProductsForm({ id }: Props) {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const { status } = err as any;
       if (status === 404) {
-        setRequestMessage("El tipo de usuario solicitado no existe");
+        setRequestMessage("El product solicitado no existe");
       } else if (status === 500) {
         setRequestMessage(
           "No se pudo descargar la información, intente más tarde"
@@ -132,8 +132,14 @@ export default function ProductsForm({ id }: Props) {
       }
       setRequestStatus("success");
     } catch (e) {
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      const { status } = e as any;
+      if (status === 409) {
+        setRequestMessage("Producto ya existe en nuestros registros");
+      } else {
+        setRequestMessage("Producto no pudo ser guardado");
+      }
       setRequestStatus("failed");
-      setRequestMessage("Producto no pudo ser guardado");
     } finally {
       setShowRequestMessage(true);
       setTimeout(() => setShowRequestMessage(false), 2000);
