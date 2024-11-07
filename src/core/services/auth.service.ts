@@ -11,7 +11,7 @@ export default class AuthService {
   };
 
   static logout = async () => {
-    return await axios.get(`${url}/logout`);
+    return await axios.get(`${url}/logout`, { withCredentials: true });
   };
 
   static verifySession = async () => {
