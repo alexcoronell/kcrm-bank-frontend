@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
 
+import InputGroup from "./Shared/InputGroup";
+import ButtonGroup from "./Shared/ButtonGroup";
+
 import { Button } from "./ui/Button";
 import { ErrorInputMessage } from "./ui/ErrorInputMessage";
 /* Components */
-import InputGroup from "./Shared/InputGroup";
 import { Input } from "./ui/Input";
 import { Label } from "./ui/Label";
 import { RequestMessage } from "./ui/RequestMessage";
@@ -170,33 +172,11 @@ export default function FranchisesForm({ id }: Props) {
             </div>
           )}
 
-          <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
-            {statusMode === "detail" ? (
-              <Button type="button" className="w-full" onClick={changeEdit}>
-                Editar
-              </Button>
-            ) : (
-              <Button type="submit" className="w-full">
-                Guardar
-              </Button>
-            )}
-            {statusMode === "edit" ? (
-              <Button
-                type="button"
-                className="w-full"
-                variant="light"
-                onClick={cancel}
-              >
-                Cancelar
-              </Button>
-            ) : (
-              <Link href="/franchises" className="w-full">
-                <Button type="button" className="w-full" variant="light">
-                  Volver
-                </Button>
-              </Link>
-            )}
-          </div>
+          <ButtonGroup
+            statusMode={statusMode}
+            changeEdit={changeEdit}
+            cancel={cancel}
+          />
         </form>
       </div>
       <RequestMessage
