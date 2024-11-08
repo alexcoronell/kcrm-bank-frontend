@@ -152,7 +152,13 @@ export default function FranchisesForm({ id }: Props) {
           </div>
 
           {statusMode !== "create" && (
-            <SwitchGroup label="Activar / Desactivar Franquicia" name="activeFranchise" checked={active} onCheckedChange={setActive} disabled={statusMode === "detail"} />
+            <SwitchGroup
+              label="Activar / Desactivar Franquicia"
+              name="activeFranchise"
+              checked={active}
+              onCheckedChange={setActive}
+              disabled={statusMode === "detail"}
+            />
           )}
 
           <ButtonGroup

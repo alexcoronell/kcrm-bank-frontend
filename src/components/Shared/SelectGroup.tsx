@@ -15,18 +15,18 @@ interface Props {
   label: string;
   name: string;
   onValueChange: (event: string) => void;
-  itemId: string;
+  value: string;
   items: Role[];
   itemsRequestStatus: RequestStatus;
-  errorMessage: string;
-  errorStatus: boolean;
+  errorMessage?: string;
+  errorStatus?: boolean;
 }
 
 export default function SelectGroup({
   label,
   name,
+  value,
   onValueChange,
-  itemId,
   items = [],
   itemsRequestStatus = "init",
   errorMessage = "",
@@ -35,9 +35,9 @@ export default function SelectGroup({
   return (
     <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
       <Label htmlFor={name}>{label}</Label>{" "}
-      <Select onValueChange={onValueChange} name={name} value={itemId}>
+      <Select onValueChange={onValueChange} name={name} value={value}>
         {" "}
-        <SelectTrigger id={itemId} className="mt-2">
+        <SelectTrigger id={name} className="mt-2">
           {" "}
           <SelectValue placeholder="Select" />{" "}
         </SelectTrigger>{" "}

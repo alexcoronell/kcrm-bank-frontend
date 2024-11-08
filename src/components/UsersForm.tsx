@@ -2,20 +2,10 @@ import { useEffect, useState } from "react";
 
 /* Components */
 import InputGroup from "./Shared/InputGroup";
+import SelectGroup from "./Shared/SelectGroup";
 import SwitchGroup from "./Shared/SwitchGroup";
 import ButtonGroup from "./Shared/ButtonGroup";
-
-import { ErrorInputMessage } from "./ui/ErrorInputMessage";
-import { Label } from "./ui/Label";
 import { RequestMessage } from "./ui/RequestMessage";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/Select";
-import SelectItemAlternative from "./Shared/SelectItemAlternative";
 
 /* Interfaces */
 import type { User } from "../core/interfaces/User.interface";
@@ -328,41 +318,16 @@ export default function UsersForm({ id }: Props) {
           )}
 
           <div className="md:grid md:grid-cols-2 md:gap-x-3 md:items-center">
-            <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-              <Label htmlFor="roleId">Rol</Label>{" "}
-              <Select
-                onValueChange={handleChangeRole}
-                value={roleId?.toString()}
-              >
-                {" "}
-                <SelectTrigger id="roleId" className="mt-2">
-                  {" "}
-                  <SelectValue placeholder="Select" />{" "}
-                </SelectTrigger>{" "}
-                <SelectContent>
-                  {roles.length > 0 && requestStatusRoles === "success" ? (
-                    <>
-                      {" "}
-                      {roles.map((item, index) => (
-                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                        <SelectItem key={index} value={item.id.toString()}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </>
-                  ) : (
-                    <SelectItemAlternative
-                      total={roles.length}
-                      status={requestStatusRoles}
-                    />
-                  )}
-                </SelectContent>
-              </Select>
-              <ErrorInputMessage
-                errorMessage={"El Rol es obligatorio"}
-                errorStatus={errorRoleId}
-              />
-            </div>
+            <SelectGroup
+              label="Rol"
+              name="rolId"
+              value={roleId?.toString() as string}
+              onValueChange={handleChangeRole}
+              items={roles}
+              itemsRequestStatus={requestStatusRoles}
+              errorMessage="El Rol es obligatorio"
+              errorStatus={errorRoleId}
+            />
 
             {statusMode !== "create" && (
               <SwitchGroup
@@ -371,7 +336,8 @@ export default function UsersForm({ id }: Props) {
                 checked={active}
                 onCheckedChange={setActive}
                 disabled={statusMode === "detail"}
-              />)}
+              />
+            )}
           </div>
 
           <ButtonGroup
