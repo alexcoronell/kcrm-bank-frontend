@@ -1,24 +1,24 @@
 import { useState, useEffect, useContext } from "react";
 import { navigate } from "wouter/use-browser-location";
 
-import { AppContext } from "../../context";
+import { AppContext } from "../context";
 
 /* Components */
-import { Button } from "../ui/Button";
-import { Input } from "../ui/Input";
-import { Label } from "../ui/Label";
-import { ErrorInputMessage } from "../ui/ErrorInputMessage";
-import { RequestMessage } from "../ui/RequestMessage";
+import { Button } from "./ui/Button";
+import { Input } from "./ui/Input";
+import { Label } from "./ui/Label";
+import { ErrorInputMessage } from "./ui/ErrorInputMessage";
+import { RequestMessage } from "./ui/RequestMessage";
 
 /* Types */
-import type { RequestStatus } from "../../core/types/RequestStatus.type";
+import type { RequestStatus } from "../core/types/RequestStatus.type";
 
 /* Services */
-import AuthService from "../../core/services/auth.service";
+import AuthService from "../core/services/auth.service";
 
 /* Helpers */
-import { validateEmailHelper } from "../../core/helpers/validators.helper";
-import type { LoginDto } from "../../core/dtos/Login.dto";
+import { validateEmailHelper } from "../core/helpers/validators.helper";
+import type { LoginDto } from "../core/dtos/Login.dto";
 
 interface Responses {
   status: number;
@@ -104,7 +104,7 @@ export default function LoginForm() {
               onBlur={validateEmail}
             />{" "}
             <ErrorInputMessage
-              message={errorEmailMessage}
+              errorMessage={errorEmailMessage}
               errorStatus={errorEmail}
             />
           </div>
@@ -122,7 +122,7 @@ export default function LoginForm() {
               onBlur={validatePassword}
             />{" "}
             <ErrorInputMessage
-              message={errorPasswordMessage}
+              errorMessage={errorPasswordMessage}
               errorStatus={errorPassword}
             />
           </div>
