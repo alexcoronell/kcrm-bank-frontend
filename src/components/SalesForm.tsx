@@ -176,7 +176,7 @@ export default function SalesForm() {
                 </SelectContent>
               </Select>
               <ErrorInputMessage
-                message={"El Producto es obligatorio"}
+                errorMessage={"El Producto es obligatorio"}
                 errorStatus={errorProduct}
               />
             </div>
@@ -215,7 +215,7 @@ export default function SalesForm() {
                   </SelectContent>
                 </Select>
                 <ErrorInputMessage
-                  message={"La Franquicia es obligatoria"}
+                  errorMessage={"La Franquicia es obligatoria"}
                   errorStatus={errorFranchise}
                 />
               </div>
@@ -238,7 +238,7 @@ export default function SalesForm() {
                   onBlur={validateRate}
                 />{" "}
                 <ErrorInputMessage
-                  message={"La tasa es obligatoria"}
+                  errorMessage={"La tasa es obligatoria"}
                   errorStatus={errorRate}
                 />
               </div>
@@ -273,7 +273,7 @@ export default function SalesForm() {
                 onBlur={validateRate}
               />{" "}
               <ErrorInputMessage
-                message={"El cupo solicitado es obligatorio"}
+                errorMessage={"El cupo solicitado es obligatorio"}
                 errorStatus={errorQuotaRequested}
               />
             </div>
@@ -289,7 +289,7 @@ export default function SalesForm() {
                 readOnly
               />{" "}
               <ErrorInputMessage
-                message={"Error, no se ha cargado el usuario actual"}
+                errorMessage={"Error, no se ha cargado el usuario actual"}
                 errorStatus={!context.currentUser}
               />
             </div>

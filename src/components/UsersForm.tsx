@@ -277,7 +277,7 @@ export default function UsersForm({ id }: Props) {
                 onBlur={validateName}
               />{" "}
               <ErrorInputMessage
-                message={"El nombre del usuario es obligatorio"}
+                errorMessage={"El nombre del usuario es obligatorio"}
                 errorStatus={errorName}
               />
             </div>
@@ -298,7 +298,7 @@ export default function UsersForm({ id }: Props) {
                 onBlur={validateEmail}
               />{" "}
               <ErrorInputMessage
-                message={errorEmailMessage}
+                errorMessage={errorEmailMessage}
                 errorStatus={errorEmail}
               />
             </div>
@@ -321,7 +321,7 @@ export default function UsersForm({ id }: Props) {
                   onBlur={validatePassword}
                 />{" "}
                 <ErrorInputMessage
-                  message={errorPasswordMessage}
+                  errorMessage={errorPasswordMessage}
                   errorStatus={errorPassword}
                 />
               </div>
@@ -343,7 +343,7 @@ export default function UsersForm({ id }: Props) {
                   onBlur={validatePassword}
                 />{" "}
                 <ErrorInputMessage
-                  message={errorConfirmPasswordMessage}
+                  errorMessage={errorConfirmPasswordMessage}
                   errorStatus={errorConfirmPassword}
                 />
               </div>
@@ -382,7 +382,7 @@ export default function UsersForm({ id }: Props) {
                 </SelectContent>
               </Select>
               <ErrorInputMessage
-                message={"El Rol es obligatorio"}
+                errorMessage={"El Rol es obligatorio"}
                 errorStatus={errorRoleId}
               />
             </div>

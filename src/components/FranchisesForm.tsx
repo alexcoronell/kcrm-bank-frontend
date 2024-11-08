@@ -155,7 +155,7 @@ export default function FranchisesForm({ id }: Props) {
               onBlur={validateName}
             />{" "}
             <ErrorInputMessage
-              message="El nombre de la franquicia es obligatorio"
+              errorMessage="El nombre de la franquicia es obligatorio"
               errorStatus={errorName}
             />
           </div>

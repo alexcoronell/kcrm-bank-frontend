@@ -165,7 +165,7 @@ export default function ProductsForm({ id }: Props) {
               onBlur={validateName}
             />{" "}
             <ErrorInputMessage
-              message="El nombre del tipo de usuario es obligatorio"
+              errorMessage="El nombre del tipo de usuario es obligatorio"
               errorStatus={errorName}
             />
           </div>

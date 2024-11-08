@@ -157,7 +157,7 @@ export default function RoleForm({ id }: Props) {
               onBlur={validateName}
             />{" "}
             <ErrorInputMessage
-              message="El nombre del Rol es obligatorio"
+              errorMessage="El nombre del Rol es obligatorio"
               errorStatus={errorName}
             />
           </div>
