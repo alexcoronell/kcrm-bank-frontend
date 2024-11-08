@@ -6,9 +6,10 @@ interface Props {
   statusMode: StatusMode;
   changeEdit: () => void;
   cancel: () => void;
+  url: string
 }
 
-export default function ButtonGroup({ statusMode, changeEdit, cancel }: Props) {
+export default function ButtonGroup({ statusMode, changeEdit, cancel, url }: Props) {
   return (
     <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
       {statusMode === "detail" ? (
@@ -30,7 +31,7 @@ export default function ButtonGroup({ statusMode, changeEdit, cancel }: Props) {
           Cancelar
         </Button>
       ) : (
-        <Link href="/franchises" className="w-full">
+        <Link href={url} className="w-full">
           <Button type="button" className="w-full" variant="light">
             Volver
           </Button>

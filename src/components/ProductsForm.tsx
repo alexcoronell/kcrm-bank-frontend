@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "wouter";
 
-import { Button } from "./ui/Button";
-import { ErrorInputMessage } from "./ui/ErrorInputMessage";
 /* Components */
-import { Input } from "./ui/Input";
-import { Label } from "./ui/Label";
+import InputGroup from "./Shared/InputGroup";
+import SwitchGroup from "./Shared/SwitchGroup";
+import ButtonGroup from "./Shared/ButtonGroup";
 import { RequestMessage } from "./ui/RequestMessage";
-import { Switch } from "./ui/Switch";
 
 /* Interfaces */
 import type { Product } from "../core/interfaces/Product.interface";
@@ -151,89 +148,51 @@ export default function ProductsForm({ id }: Props) {
       <div className="max-w-md mx-auto">
         <form onSubmit={handleSubmit}>
           <div className="mx-auto max-w-xs space-y-2 my-6">
-            {" "}
-            <Label htmlFor="name">Ingresa el nombre</Label>{" "}
-            <Input
-              placeholder="Ingresa el nombre"
-              id="name"
-              name="name"
-              type="text"
+            <InputGroup
+              label="Ingresa el nombre"
+              name={name}
               value={name}
               disabled={requestStatus === "loading"}
               readOnly={statusMode === "detail"}
               onChange={(e) => setName(e.target.value)}
               onBlur={validateName}
-            />{" "}
-            <ErrorInputMessage
               errorMessage="El nombre del tipo de usuario es obligatorio"
               errorStatus={errorName}
-            />
+            />{" "}
           </div>
 
-          <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-            {" "}
-            <Switch
-              id="rateRequired"
-              checked={rateRequired}
-              onCheckedChange={setRateRequired}
-              disabled={statusMode === "detail"}
-            />{" "}
-            <Label htmlFor="rateRequired">Tasa requerida</Label>{" "}
-          </div>
+          <SwitchGroup
+            label="Tasa requerida"
+            name="rateRequired"
+            checked={rateRequired}
+            onCheckedChange={setRateRequired}
+            disabled={statusMode === "detail"}
+          />
 
-          <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-            {" "}
-            <Switch
-              id="rateRequired"
-              checked={franchiseRequired}
-              onCheckedChange={setFranchiseRequired}
-              disabled={statusMode === "detail"}
-            />{" "}
-            <Label htmlFor="franchiseRequired">Franquicia requerida</Label>{" "}
-          </div>
+          <SwitchGroup
+            label="Tasa requerida"
+            name="franchiseRequired"
+            checked={franchiseRequired}
+            onCheckedChange={setFranchiseRequired}
+            disabled={statusMode === "detail"}
+          />
 
           {statusMode !== "create" && (
-            <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-              {" "}
-              <Switch
-                id="activateUser"
-                checked={active}
-                onCheckedChange={setActive}
-                disabled={statusMode === "detail"}
-              />{" "}
-              <Label htmlFor="activateUser">
-                Activar / Desactivar Tipo de Usuario
-              </Label>{" "}
-            </div>
+            <SwitchGroup
+              label="Activar / Desactivar Producto"
+              name="activateFranchise"
+              checked={active}
+              onCheckedChange={setActive}
+              disabled={statusMode === "detail"}
+            />
           )}
 
-          <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
-            {statusMode === "detail" ? (
-              <Button type="button" className="w-full" onClick={changeEdit}>
-                Editar
-              </Button>
-            ) : (
-              <Button type="submit" className="w-full">
-                Guardar
-              </Button>
-            )}
-            {statusMode === "edit" ? (
-              <Button
-                type="button"
-                className="w-full"
-                variant="light"
-                onClick={cancel}
-              >
-                Cancelar
-              </Button>
-            ) : (
-              <Link href="/products" className="w-full">
-                <Button type="button" className="w-full" variant="light">
-                  Volver
-                </Button>
-              </Link>
-            )}
-          </div>
+          <ButtonGroup
+            statusMode={statusMode}
+            changeEdit={changeEdit}
+            cancel={cancel}
+            url="/products"
+          />
         </form>
         <RequestMessage
           message={requestMessage}

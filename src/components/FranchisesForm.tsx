@@ -159,6 +159,7 @@ export default function FranchisesForm({ id }: Props) {
             statusMode={statusMode}
             changeEdit={changeEdit}
             cancel={cancel}
+            url="/franchises"
           />
         </form>
       </div>
