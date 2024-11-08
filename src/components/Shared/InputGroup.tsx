@@ -9,7 +9,7 @@ interface Props {
   name: string;
   type?: string;
   disabled: boolean;
-  readOnly: boolean;
+  readOnly?: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: () => void;
   errorMessage?: string;
@@ -42,6 +42,7 @@ export default function InputGroup({
         readOnly={readOnly}
         onChange={onChange}
         onBlur={onBlur}
+        autoComplete="off"
       />{" "}
       <ErrorInputMessage
         errorMessage={errorMessage}

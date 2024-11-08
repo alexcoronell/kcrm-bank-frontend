@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from "wouter";
 
-import { Button } from "./ui/Button";
+/* Components */
+import InputGroup from "./Shared/InputGroup";
+import SwitchGroup from "./Shared/SwitchGroup";
+import ButtonGroup from "./Shared/ButtonGroup";
+
 import { ErrorInputMessage } from "./ui/ErrorInputMessage";
-import { Input } from "./ui/Input";
 import { Label } from "./ui/Label";
 import { RequestMessage } from "./ui/RequestMessage";
-/* Components */
 import {
   Select,
   SelectContent,
@@ -14,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/Select";
-import { Switch } from "./ui/Switch";
 import SelectItemAlternative from "./Shared/SelectItemAlternative";
 
 /* Interfaces */
@@ -259,24 +259,18 @@ export default function UsersForm({ id }: Props) {
   return (
     <>
       <div className="UsersForm max-w-[800px] mx-auto">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div className="md:grid md:grid-cols-2 md:gap-x-3">
             {/* Name */}
             <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-              {" "}
-              <Label htmlFor="name">Nombre</Label>{" "}
-              <Input
-                placeholder="Ingresa tu nombre"
-                id="name"
+              <InputGroup
+                label="Ingresa el nombre"
                 name="name"
-                type="text"
                 value={name}
                 disabled={requestStatus === "loading"}
                 readOnly={statusMode === "detail"}
                 onChange={(e) => setName(e.target.value)}
                 onBlur={validateName}
-              />{" "}
-              <ErrorInputMessage
                 errorMessage={"El nombre del usuario es obligatorio"}
                 errorStatus={errorName}
               />
@@ -284,11 +278,8 @@ export default function UsersForm({ id }: Props) {
 
             {/* Email */}
             <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-              {" "}
-              <Label htmlFor="email">Email</Label>{" "}
-              <Input
-                placeholder="Ingresa tu email"
-                id="email"
+              <InputGroup
+                label="Ingresa el correo electónico"
                 name="email"
                 type="email"
                 value={email}
@@ -296,8 +287,6 @@ export default function UsersForm({ id }: Props) {
                 readOnly={statusMode === "detail"}
                 onChange={(e) => setEmail(e.target.value)}
                 onBlur={validateEmail}
-              />{" "}
-              <ErrorInputMessage
                 errorMessage={errorEmailMessage}
                 errorStatus={errorEmail}
               />
@@ -308,19 +297,14 @@ export default function UsersForm({ id }: Props) {
             <div className="md:grid md:grid-cols-2 md:gap-x-3 ">
               {/* Password */}
               <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-                {" "}
-                <Label htmlFor="password">Contraseña</Label>{" "}
-                <Input
+                <InputGroup
+                  label="Ingresa la contraseña"
                   name="password"
-                  id="password"
-                  placeholder="Ingresa la contraseña"
                   type="password"
                   value={password}
                   disabled={requestStatus === "loading"}
                   onChange={(e) => setPassword(e.target.value)}
                   onBlur={validatePassword}
-                />{" "}
-                <ErrorInputMessage
                   errorMessage={errorPasswordMessage}
                   errorStatus={errorPassword}
                 />
@@ -328,21 +312,14 @@ export default function UsersForm({ id }: Props) {
 
               {/* Confirm Password */}
               <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-                {" "}
-                <Label htmlFor="confirm-password">
-                  Confirma tu contraseña
-                </Label>{" "}
-                <Input
+                <InputGroup
+                  label="Confirma la contraseña"
                   name="confirmPassword"
-                  id="confirmPassword"
-                  placeholder="Ingresa nuevamente la contraseña"
                   type="password"
                   value={confirmPassword}
                   disabled={requestStatus === "loading"}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   onBlur={validatePassword}
-                />{" "}
-                <ErrorInputMessage
                   errorMessage={errorConfirmPasswordMessage}
                   errorStatus={errorConfirmPassword}
                 />
@@ -388,48 +365,21 @@ export default function UsersForm({ id }: Props) {
             </div>
 
             {statusMode !== "create" && (
-              <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-                {" "}
-                <Switch
-                  id="activateUser"
-                  checked={active}
-                  onCheckedChange={setActive}
-                  disabled={statusMode === "detail"}
-                />{" "}
-                <Label htmlFor="activateUser">
-                  Activar / Desactivar Usuario
-                </Label>{" "}
-              </div>
-            )}
+              <SwitchGroup
+                label="Activar / Desactivar Usuario"
+                name="activateUser"
+                checked={active}
+                onCheckedChange={setActive}
+                disabled={statusMode === "detail"}
+              />)}
           </div>
 
-          <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
-            {statusMode === "detail" ? (
-              <Button type="button" className="w-full" onClick={changeEdit}>
-                Editar
-              </Button>
-            ) : (
-              <Button type="submit" className="w-full">
-                Guardar
-              </Button>
-            )}
-            {statusMode === "edit" ? (
-              <Button
-                type="button"
-                className="w-full"
-                variant="light"
-                onClick={cancel}
-              >
-                Cancelar
-              </Button>
-            ) : (
-              <Link href="/users" className="w-full">
-                <Button type="button" className="w-full" variant="light">
-                  Volver
-                </Button>
-              </Link>
-            )}
-          </div>
+          <ButtonGroup
+            statusMode={statusMode}
+            changeEdit={changeEdit}
+            cancel={cancel}
+            url="/users"
+          />
         </form>
       </div>
       <RequestMessage
