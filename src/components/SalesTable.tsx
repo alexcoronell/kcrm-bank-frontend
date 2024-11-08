@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import EyeIcon from "../icons/EyeIcon";
-import TrashIcon from "../icons/TrashIcon";
-import { Button } from "../ui/Button";
-import { Label } from "../ui/Label";
+import EyeIcon from "./icons/EyeIcon";
+import TrashIcon from "./icons/TrashIcon";
+import { Button } from "./ui/Button";
+import { Label } from "./ui/Label";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "../ui/Select";
+} from "./ui/Select";
 import {
 	Table,
 	TableBody,
@@ -18,22 +18,22 @@ import {
 	TableFoot,
 	TableRoot,
 	TableRow,
-} from "../ui/Table";
-import TableHeadComponent from "./TableHeadComponent";
-import TableRowAlternative from "./TableRowAlternative";
-import TableRowTotal from "./TableRowTotal";
+} from "./ui/Table";
+import TableHeadComponent from "./Shared/TableHeadComponent";
+import TableRowAlternative from "./Shared/TableRowAlternative";
+import TableRowTotal from "./Shared/TableRowTotal";
 
 /* Interfaces */
-import type { Sale } from "../../core/interfaces/Sale.interface";
+import type { Sale } from "../core/interfaces/Sale.interface";
 
 /* Services */
-import SaleService from "../../core/services/sale.service";
+import SaleService from "../core/services/sale.service";
 
 /* Types */
-import type { RequestStatus } from "../../core/types/RequestStatus.type";
+import type { RequestStatus } from "../core/types/RequestStatus.type";
 
 /* Helpers */
-import { formatDateTime } from "../../core/helpers/formatDate.helper";
+import { formatDateTime } from "../core/helpers/formatDate.helper";
 
 export function SalesTable() {
 	const [sales, setSales] = useState<Sale[]>([]);

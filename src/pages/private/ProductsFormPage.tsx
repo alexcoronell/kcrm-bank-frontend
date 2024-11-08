@@ -3,7 +3,7 @@ import { useParams } from "wouter";
 
 /* Components */
 import Page from "../../components/layouts/Page";
-import ProductsForm from '../../components/Shared/ProductsForm';
+import ProductsForm from '../../components/ProductsForm';
 
 export default function ProductsFormPage() {
     const [currentId, setCurrentId] = useState<number | null>(null);

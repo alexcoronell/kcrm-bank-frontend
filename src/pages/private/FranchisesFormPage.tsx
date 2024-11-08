@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "wouter";
 
-import FranchisesForm from "../../components/Shared/FranchisesForm";
+import FranchisesForm from "../../components/FranchisesForm";
 import Page from "../../components/layouts/Page";
 
 export default function FranchisesFormPage() {

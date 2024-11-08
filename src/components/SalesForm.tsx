@@ -1,11 +1,11 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "wouter";
 
-import { Button } from "../ui/Button";
-import { ErrorInputMessage } from "../ui/ErrorInputMessage";
-import { Input } from "../ui/Input";
-import { Label } from "../ui/Label";
-import { RequestMessage } from "../ui/RequestMessage";
+import { Button } from "./ui/Button";
+import { ErrorInputMessage } from "./ui/ErrorInputMessage";
+import { Input } from "./ui/Input";
+import { Label } from "./ui/Label";
+import { RequestMessage } from "./ui/RequestMessage";
 
 /* Components */
 import {
@@ -14,29 +14,29 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/Select";
-import { Switch } from "../ui/Switch";
-import SelectItemAlternative from "./SelectItemAlternative";
+} from "./ui/Select";
+import { Switch } from "./ui/Switch";
+import SelectItemAlternative from "./Shared/SelectItemAlternative";
 
 /* Context */
-import { AppContext } from "../../context";
+import { AppContext } from "../context";
 
 /* Interfaces */
-import { Sale } from "../../core/interfaces/Sale.interface";
-import type { Franchise } from "../../core/interfaces/Franchise.interface";
-import type { Product } from "../../core/interfaces/Product.interface";
+import { Sale } from "../core/interfaces/Sale.interface";
+import type { Franchise } from "../core/interfaces/Franchise.interface";
+import type { Product } from "../core/interfaces/Product.interface";
 
 /* DTO's */
-import { CreateSaleDto, UpdateSaleDto } from "../../core/dtos/Sale.dto";
+import { CreateSaleDto, UpdateSaleDto } from "../core/dtos/Sale.dto";
 
 /* Types */
-import type { RequestStatus } from "../../core/types/RequestStatus.type";
-import type { StatusMode } from "../../core/types/StatusMode.type";
+import type { RequestStatus } from "../core/types/RequestStatus.type";
+import type { StatusMode } from "../core/types/StatusMode.type";
 
 /* Services */
-import SaleService from "../../core/services/sale.service";
-import FranchiseService from "../../core/services/franchise.service";
-import ProductService from "../../core/services/product.service";
+import SaleService from "../core/services/sale.service";
+import FranchiseService from "../core/services/franchise.service";
+import ProductService from "../core/services/product.service";
 import { RiCloseLargeFill } from "@remixicon/react";
 
 export default function SalesForm() {

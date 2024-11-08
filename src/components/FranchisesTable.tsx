@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import EyeIcon from "../icons/EyeIcon";
-import TrashIcon from "../icons/TrashIcon";
-import TextInputPassword from "../icons/TextInputPassword";
-import { Button } from "../ui/Button";
-import { Label } from "../ui/Label";
+import EyeIcon from "./icons/EyeIcon";
+import TrashIcon from "./icons/TrashIcon";
+import { Button } from "./ui/Button";
+import { Label } from "./ui/Label";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "../ui/Select";
+} from "./ui/Select";
 import {
 	Table,
 	TableBody,
@@ -19,49 +18,47 @@ import {
 	TableFoot,
 	TableRoot,
 	TableRow,
-} from "../ui/Table";
-import TableHeadComponent from "./TableHeadComponent";
-import TableRowAlternative from "./TableRowAlternative";
-import TableRowTotal from "./TableRowTotal";
+} from "./ui/Table";
+import TableHeadComponent from "./Shared/TableHeadComponent";
+import TableRowAlternative from "./Shared/TableRowAlternative";
+import TableRowTotal from "./Shared/TableRowTotal";
 
 /* Interfaces */
-import type { User } from "../../core/interfaces/User.interface";
+import type { Franchise } from "../core/interfaces/Franchise.interface";
 
 /* Services */
-import UserService from "../../core/services/user.service";
+import FranchiseService from "../core/services/franchise.service";
 
 /* Types */
-import type { RequestStatus } from "../../core/types/RequestStatus.type";
+import type { RequestStatus } from "../core/types/RequestStatus.type";
 
 /* Helpers */
-import { formatDateTime } from "../../core/helpers/formatDate.helper";
+import { formatDateTime } from "../core/helpers/formatDate.helper";
 
-export function UsersTable() {
-	const [users, setUsers] = useState<User[]>([]);
+export function FranchisesTable() {
+	const [franchises, setFranchise] = useState<Franchise[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [limit, setLimit] = useState<number>(10);
 	const [totalPages, setTotalPages] = useState<number>(0);
 	const [page, setPage] = useState<number>(1);
 	const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
-	const titleColumns = ["Nombre", "Email", "Creado", "Actualizado", "Activo"];
-	const columns = titleColumns.length + 2;
+	const columns = 6;
+	const titleColums = ["Nombre", "Creado", "Actualizado", "Activo"];
+
 	
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 		useEffect(() => {
 		fetchData();
 	}, [page, limit]);
 
-	/**
-	 * Get data from api
-	 */
 	const fetchData = async () => {
 		setRequestStatus("loading");
 		try {
 			const {
 				data: { items, count },
-			} = await UserService.getAll(page, limit);
+			} = await FranchiseService.getAll(page, limit);
 			setRequestStatus("success");
-			setUsers(items);
+			setFranchise(items);
 			setTotal(count);
 			setTotalPages(Math.ceil(total / limit));
 		} catch (e) {
@@ -69,13 +66,9 @@ export function UsersTable() {
 		}
 	};
 
-	/**
-	 * Delete the item
-	 * @param id
-	 */
-	const handleDelete = async (id: User["id"]) => {
+	const handleDelete = async (id: Franchise["id"]) => {
 		try {
-			const response = await UserService.delete(id);
+			const response = await FranchiseService.delete(id);
 			fetchData();
 		} catch (e) {
 			setRequestStatus("failed");
@@ -83,20 +76,10 @@ export function UsersTable() {
 		}
 	};
 
-	/**
-	 * Change number of items per page
-	 * @param e
-	 */
-	
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const  handleChangeLimit = (e: any) => {
+	const handleChangeLimit = (e: any) => {
 		setLimit(e);
 	};
 
-	/**
-	 * Set the previous page
-	 * @returns void
-	 */
 	const prevPage = () => {
 		if (page === 1) {
 			return;
@@ -104,10 +87,6 @@ const  handleChangeLimit = (e: any) => {
 		setPage(page - 1);
 	};
 
-	/**
-	 * Set the next page
-	 * @returns void
-	 */
 	const nextPage = () => {
 		if (page === totalPages) {
 			return;
@@ -142,15 +121,14 @@ const  handleChangeLimit = (e: any) => {
 				</div>
 			</div>
 			<Table>
-				<TableHeadComponent titleColumns={titleColumns} />
+				<TableHeadComponent titleColumns={titleColums} />
 				<TableBody>
 					{total > 0 && requestStatus !== "loading" ? (
 						<>
-							{users.map((item) => (
+							{franchises.map((item) => (
 								<TableRow key={item.id}>
 									<TableCell>{item.id}</TableCell>
 									<TableCell>{item.name}</TableCell>
-									<TableCell>{item.email}</TableCell>
 									<TableCell>{formatDateTime(item.createAt)}</TableCell>
 									<TableCell>{formatDateTime(item.updateAt)}</TableCell>
 									<TableCell className="text-white">
@@ -161,21 +139,16 @@ const  handleChangeLimit = (e: any) => {
 										)}
 									</TableCell>
 									<TableCell className="action-buttons">
-										<Link href={`/users/detail/${item.id}`}>
+										<Link href={`/franchises/detail/${item.id}`}>
 											<Button variant="light">
-												<EyeIcon classes="size-4" />
-											</Button>
-										</Link>
-										<Link href={`/users/password/${item.id}`}>
-											<Button variant="light">
-												<TextInputPassword classes="size-4" />
+												<EyeIcon classes="size-3" />
 											</Button>
 										</Link>
 										<Button
 											variant="destructive"
 											onClick={() => handleDelete(item.id)}
 										>
-											<TrashIcon classes="size-4" />
+											<TrashIcon classes="size-3" />
 										</Button>
 									</TableCell>
 								</TableRow>
@@ -189,6 +162,7 @@ const  handleChangeLimit = (e: any) => {
 						/>
 					)}
 				</TableBody>
+
 				<TableFoot>
 					<TableRow>
 						<TableCell colSpan={columns} className="text-center">

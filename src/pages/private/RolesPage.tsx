@@ -1,4 +1,4 @@
-import { RolesTable } from "../../components/Shared/RolesTable";
+import { RolesTable } from "../../components/RolesTable";
 /* Components */
 import Page from "../../components/layouts/Page";
 

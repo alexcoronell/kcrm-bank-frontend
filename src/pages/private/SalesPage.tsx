@@ -1,4 +1,4 @@
-import { SalesTable } from "../../components/Shared/SalesTable";
+import { SalesTable } from "../../components/SalesTable";
 
 /* Components */
 import Page from "../../components/layouts/Page";

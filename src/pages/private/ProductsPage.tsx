@@ -1,4 +1,4 @@
-import ProductsTable from '../../components/Shared/ProductsTable';
+import ProductsTable from '../../components/ProductsTable';
 
 /* Components */
 import Page from "../../components/layouts/Page";

@@ -1,4 +1,4 @@
-import { UsersTable } from "../../components/Shared/UsersTable";
+import { UsersTable } from "../../components/UsersTable";
 import Page from "../../components/layouts/Page";
 
 /* Variables */

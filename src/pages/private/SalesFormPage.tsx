@@ -1,4 +1,4 @@
-import SalesForm from "../../components/Shared/SalesForm";
+import SalesForm from "../../components/SalesForm";
 import Page from "../../components/layouts/Page";
 export default function SalesFormPage() {
 	return (

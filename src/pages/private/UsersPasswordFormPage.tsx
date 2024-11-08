@@ -3,7 +3,7 @@ import { useParams } from "wouter";
 
 /* Components */
 import Page from "../../components/layouts/Page";
-import UsersPasswordForm from "../../components/Shared/UsersPasswordForm";
+import UsersPasswordForm from "../../components/UsersPasswordForm";
 
 export default function UsersPasswordFormPage() {
 	const [currentId, setCurrentId] = useState<number | null>(null);

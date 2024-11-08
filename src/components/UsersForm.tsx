@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
 
-import { Button } from "../ui/Button";
-import { ErrorInputMessage } from "../ui/ErrorInputMessage";
-import { Input } from "../ui/Input";
-import { Label } from "../ui/Label";
-import { RequestMessage } from "../ui/RequestMessage";
+import { Button } from "./ui/Button";
+import { ErrorInputMessage } from "./ui/ErrorInputMessage";
+import { Input } from "./ui/Input";
+import { Label } from "./ui/Label";
+import { RequestMessage } from "./ui/RequestMessage";
 /* Components */
 import {
   Select,
@@ -13,27 +13,27 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/Select";
-import { Switch } from "../ui/Switch";
-import SelectItemAlternative from "./SelectItemAlternative";
+} from "./ui/Select";
+import { Switch } from "./ui/Switch";
+import SelectItemAlternative from "./Shared/SelectItemAlternative";
 
 /* Interfaces */
-import type { User } from "../../core/interfaces/User.interface";
-import type { Role } from "../../core/interfaces/Role.interface";
+import type { User } from "../core/interfaces/User.interface";
+import type { Role } from "../core/interfaces/Role.interface";
 
 /* DTO's */
-import type { CreateUserDto, UpdateUserDto } from "../../core/dtos/User.dto";
+import type { CreateUserDto, UpdateUserDto } from "../core/dtos/User.dto";
 
 /* Types */
-import type { RequestStatus } from "../../core/types/RequestStatus.type";
-import type { StatusMode } from "../../core/types/StatusMode.type";
+import type { RequestStatus } from "../core/types/RequestStatus.type";
+import type { StatusMode } from "../core/types/StatusMode.type";
 
 /* Services */
-import UserService from "../../core/services/user.service";
-import RoleService from "../../core/services/Role.service";
+import UserService from "../core/services/user.service";
+import RoleService from "../core/services/Role.service";
 
 /* Helpers */
-import { validateEmailHelper } from "../../core/helpers/validators.helper";
+import { validateEmailHelper } from "../core/helpers/validators.helper";
 
 interface Props {
   id: User["id"] | null;

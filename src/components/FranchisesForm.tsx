@@ -1,57 +1,59 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
 
-import { Button } from "../ui/Button";
-import { ErrorInputMessage } from "../ui/ErrorInputMessage";
+import { Button } from "./ui/Button";
+import { ErrorInputMessage } from "./ui/ErrorInputMessage";
 /* Components */
-import { Input } from "../ui/Input";
-import { Label } from "../ui/Label";
-import { RequestMessage } from "../ui/RequestMessage";
-import { Switch } from "../ui/Switch";
+import { Input } from "./ui/Input";
+import { Label } from "./ui/Label";
+import { RequestMessage } from "./ui/RequestMessage";
+import { Switch } from "./ui/Switch";
 
 /* Interfaces */
-import type { Role } from "../../core/interfaces/Role.interface";
+import type { Franchise } from "../core/interfaces/Franchise.interface";
 
 /* DTO's */
-import type { CreateRoleDto, UpdateRoleDto } from "../../core/dtos/Role.dto";
+import type {
+  CreateFranchiseDto,
+  UpdateFranchiseDto,
+} from "../core/dtos/Franchise.dto";
 
 /* Types */
-import type { RequestStatus } from "../../core/types/RequestStatus.type";
-import type { StatusMode } from "../../core/types/StatusMode.type";
+import type { RequestStatus } from "../core/types/RequestStatus.type";
+import type { StatusMode } from "../core/types/StatusMode.type";
 
 /* Services */
-import RoleService from "../../core/services/Role.service";
+import FranchiseService from "../core/services/franchise.service";
 
 interface Props {
-  id: Role["id"] | null;
+  id: Franchise["id"] | null;
 }
 
-export default function RoleForm({ id }: Props) {
+export default function FranchisesForm({ id }: Props) {
   const [statusMode, setStatusMode] = useState<StatusMode>("create");
-  const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>("failed");
   const [name, setName] = useState<string>("");
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [active, setActive] = useState<boolean>(false);
   const [errorName, setErrorName] = useState<boolean>(false);
   const [requestMessage, setRequestMessage] = useState<string>("");
   const [showRequestMessage, setShowRequestMessage] = useState<boolean>(false);
 
-  const get = async (id: Role["id"]) => {
+  const get = async () => {
     setRequestStatus("loading");
     try {
-      const { data } = await RoleService.get(id as number);
-      const { name, isAdmin, active } = data;
+      const { data } = await FranchiseService.get(id as number);
+      const { name, active } = data;
       setName(name);
-      setIsAdmin(isAdmin);
       setActive(active);
       setRequestStatus("success");
     } catch (err) {
-      setShowRequestMessage(true);
       setRequestStatus("failed");
+      setShowRequestMessage(true);
+
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const { status } = err as any;
       if (status === 404) {
-        setRequestMessage("El rol solicitado no existe");
+        setRequestMessage("La Franquicia solicitada no existe");
       } else if (status === 500) {
         setRequestMessage(
           "No se pudo descargar la información, intente más tarde"
@@ -65,7 +67,7 @@ export default function RoleForm({ id }: Props) {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (id) {
-      get(id);
+      get();
       setStatusMode("detail");
     }
   }, [id]);
@@ -80,7 +82,7 @@ export default function RoleForm({ id }: Props) {
 
   const cancel = () => {
     clean();
-    get(id as number);
+    get();
     setStatusMode("detail");
   };
 
@@ -93,7 +95,6 @@ export default function RoleForm({ id }: Props) {
   const clean = () => {
     setErrorName(false);
     setActive(false);
-    setIsAdmin(false);
     setName("");
   };
 
@@ -105,21 +106,19 @@ export default function RoleForm({ id }: Props) {
     if (errorName || statusMode === "detail") return;
     try {
       if (statusMode === "create") {
-        const dto: CreateRoleDto = {
+        const franquise: CreateFranchiseDto = {
           name,
-          isAdmin,
         };
-        await RoleService.save(dto);
-        setRequestMessage("Rol guardado correctamente");
+        await FranchiseService.save(franquise);
+        setRequestMessage("Franquicia guardada correctamente");
         clean();
       } else {
-        const dto: UpdateRoleDto = {
+        const franquise: UpdateFranchiseDto = {
           name,
-          isAdmin,
           active,
         };
-        await RoleService.update(id as number, dto);
-        setRequestMessage("Rol actualizado correctamente");
+        await FranchiseService.update(id as number, franquise);
+        setRequestMessage("Franquicia actualizada correctamente");
         setStatusMode("detail");
       }
       setRequestStatus("success");
@@ -127,17 +126,16 @@ export default function RoleForm({ id }: Props) {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const { status } = e as any;
       if (status === 409) {
-        setRequestMessage("Rol ya existe en nuestros registros");
+        setRequestMessage("Franquicia ya existe en nuestros registros");
       } else {
-        setRequestMessage("Rol no pudo ser guardado");
+        setRequestMessage("Franquicia no pudo ser guardada");
       }
       setRequestStatus("failed");
     } finally {
       setShowRequestMessage(true);
-      setTimeout(() => setShowRequestMessage(false), 5000);
+      setTimeout(() => setShowRequestMessage(false), 2000);
     }
   };
-
   return (
     <>
       <div className="max-w-md mx-auto">
@@ -157,22 +155,9 @@ export default function RoleForm({ id }: Props) {
               onBlur={validateName}
             />{" "}
             <ErrorInputMessage
-              message="El nombre del Rol es obligatorio"
+              message="El nombre de la franquicia es obligatorio"
               errorStatus={errorName}
             />
-          </div>
-
-          <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-            {" "}
-            <Switch
-              id="isAdmin"
-              checked={isAdmin}
-              onCheckedChange={setIsAdmin}
-              disabled={statusMode === "detail"}
-            />{" "}
-            <Label htmlFor="activateUser">
-              Establecer usuario administrativo
-            </Label>{" "}
           </div>
 
           {statusMode !== "create" && (
@@ -184,7 +169,9 @@ export default function RoleForm({ id }: Props) {
                 onCheckedChange={setActive}
                 disabled={statusMode === "detail"}
               />{" "}
-              <Label htmlFor="activateUser">Activar / Desactivar Role</Label>{" "}
+              <Label htmlFor="activateUser">
+                Activar / Desactivar Franquicia
+              </Label>{" "}
             </div>
           )}
 
@@ -208,7 +195,7 @@ export default function RoleForm({ id }: Props) {
                 Cancelar
               </Button>
             ) : (
-              <Link href="/roles" className="w-full">
+              <Link href="/franchises" className="w-full">
                 <Button type="button" className="w-full" variant="light">
                   Volver
                 </Button>

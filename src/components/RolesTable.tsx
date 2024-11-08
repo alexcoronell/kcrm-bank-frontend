@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import EyeIcon from "../icons/EyeIcon";
-import TrashIcon from "../icons/TrashIcon";
-import { Button } from "../ui/Button";
-import { Label } from "../ui/Label";
+import EyeIcon from "./icons/EyeIcon";
+import TrashIcon from "./icons/TrashIcon";
+import { Button } from "./ui/Button";
+import { Label } from "./ui/Label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/Select";
+} from "./ui/Select";
 import {
   Table,
   TableBody,
@@ -18,45 +18,55 @@ import {
   TableFoot,
   TableRoot,
   TableRow,
-} from "../ui/Table";
-import TableHeadComponent from "./TableHeadComponent";
-import TableRowAlternative from "./TableRowAlternative";
-import TableRowTotal from "./TableRowTotal";
+} from "./ui/Table";
+import TableHeadComponent from "./Shared/TableHeadComponent";
+import TableRowAlternative from "./Shared/TableRowAlternative";
+import TableRowTotal from "./Shared/TableRowTotal";
 
 /* Interfaces */
-import type { Product } from "../../core/interfaces/Product.interface";
+import type { Role } from "../core/interfaces/Role.interface";
 
 /* Services */
-import ProductService from "../../core/services/product.service";
+import RoleService from "../core/services/Role.service";
 
 /* Types */
-import type { RequestStatus } from "../../core/types/RequestStatus.type";
+import type { RequestStatus } from "../core/types/RequestStatus.type";
 
 /* Helpers */
-import { formatDateTime } from "../../core/helpers/formatDate.helper";
+import { formatDateTime } from "../core/helpers/formatDate.helper";
 
-export default function ProductsTable() {
-  const [products, setProducts] = useState<Product[]>([]);
+export function RolesTable() {
+  const [roles, setRoles] = useState<Role[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
-  const titleColums = ["Nombre", "Tasa requerida", "Franquicia requerida","Actualizado", "Activo"];
-  const columns = titleColums.length + 2;
-
-  useEffect(() => {
-    fetchData(page, limit);
+  const columns = 7;
+  const titleColums = [
+    "Nombre",
+    "Administrador",
+    "Creado",
+    "Actualizado",
+    "Activo",
+  ];
+  
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
+    fetchData();
   }, [page, limit]);
 
-  const fetchData = async (page: number, limit: number) => {
+  /**
+   * Get data from api
+   */
+  const fetchData = async () => {
     setRequestStatus("loading");
     try {
       const {
         data: { items, count },
-      } = await ProductService.getAll(page, limit);
+      } = await RoleService.getAll(page, limit);
       setRequestStatus("success");
-      setProducts(items);
+      setRoles(items);
       setTotal(count);
       setTotalPages(Math.ceil(total / limit));
     } catch (e) {
@@ -64,20 +74,32 @@ export default function ProductsTable() {
     }
   };
 
-  const handleDelete = async (id: Product["id"]) => {
+  /**
+   * Delete the item
+   * @param id
+   */
+  const handleDelete = async (id: Role["id"]) => {
     try {
-      const response = await ProductService.delete(id);
-      fetchData(page, limit);
+      const response = await RoleService.delete(id);
+      fetchData();
     } catch (e) {
       setRequestStatus("failed");
       console.error(e);
     }
   };
 
+  /**
+   * Change number of items per page
+   * @param e
+   */
   const handleChangeLimit = (e: any) => {
     setLimit(e);
   };
 
+  /**
+   * Set the previous page
+   * @returns void
+   */
   const prevPage = () => {
     if (page === 1) {
       return;
@@ -85,6 +107,10 @@ export default function ProductsTable() {
     setPage(page - 1);
   };
 
+  /**
+   * Set the next page
+   * @returns void
+   */
   const nextPage = () => {
     if (page === totalPages) {
       return;
@@ -123,16 +149,22 @@ export default function ProductsTable() {
         <TableBody>
           {total > 0 && requestStatus !== "loading" ? (
             <>
-              {products.map((item) => (
+              {roles.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.id}</TableCell>
                   <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.rateRequired ? "Sí" : "No"}</TableCell>
-                  <TableCell>{item.franchiseRequired ? "Sí" : "No"}</TableCell>
+                  <TableCell>{item.isAdmin ? "Sí" : "No"}</TableCell>
                   <TableCell>{formatDateTime(item.createAt)}</TableCell>
                   <TableCell>{formatDateTime(item.updateAt)}</TableCell>
+                  <TableCell className="text-white">
+                    {item.active ? (
+                      <span className="bg-green-900 px-2">Activo</span>
+                    ) : (
+                      <span className="bg-red-900 px-2">Inactivo</span>
+                    )}
+                  </TableCell>
                   <TableCell className="action-buttons">
-                    <Link href={`/products/detail/${item.id}`}>
+                    <Link href={`/roles/detail/${item.id}`}>
                       <Button variant="light">
                         <EyeIcon classes="size-3" />
                       </Button>

@@ -1,4 +1,4 @@
-import { FranchisesTable } from "../../components/Shared/FranchisesTable";
+import { FranchisesTable } from "../../components/FranchisesTable";
 /* Components */
 import Page from "../../components/layouts/Page";
 

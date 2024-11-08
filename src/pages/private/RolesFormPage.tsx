@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "wouter";
 
-import UserTypeForm from "../../components/Shared/RoleForm";
+import UserTypeForm from "../../components/RoleForm";
 /* Components */
 import Page from "../../components/layouts/Page";
 
