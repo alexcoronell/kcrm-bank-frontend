@@ -5,7 +5,8 @@ interface Props {
   label: string;
   name: string;
   checked: boolean;
-  onCheckedChange: () => void;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  onCheckedChange: any;
   disabled: boolean;
 }
 

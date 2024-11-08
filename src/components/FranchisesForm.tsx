@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "wouter";
 
+/* Components */
 import InputGroup from "./Shared/InputGroup";
 import ButtonGroup from "./Shared/ButtonGroup";
-
-import { Button } from "./ui/Button";
-import { ErrorInputMessage } from "./ui/ErrorInputMessage";
-/* Components */
-import { Input } from "./ui/Input";
-import { Label } from "./ui/Label";
+import SwitchGroup from "./Shared/SwitchGroup";
 import { RequestMessage } from "./ui/RequestMessage";
-import { Switch } from "./ui/Switch";
 
 /* Interfaces */
 import type { Franchise } from "../core/interfaces/Franchise.interface";
@@ -158,18 +152,7 @@ export default function FranchisesForm({ id }: Props) {
           </div>
 
           {statusMode !== "create" && (
-            <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-              {" "}
-              <Switch
-                id="activateUser"
-                checked={active}
-                onCheckedChange={setActive}
-                disabled={statusMode === "detail"}
-              />{" "}
-              <Label htmlFor="activateUser">
-                Activar / Desactivar Franquicia
-              </Label>{" "}
-            </div>
+            <SwitchGroup label="Activar / Desactivar Franquicia" name="activeFranchise" checked={active} onCheckedChange={setActive} disabled={statusMode === "detail"} />
           )}
 
           <ButtonGroup
