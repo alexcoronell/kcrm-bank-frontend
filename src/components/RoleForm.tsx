@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "wouter";
 
-import { Button } from "./ui/Button";
-import { ErrorInputMessage } from "./ui/ErrorInputMessage";
 /* Components */
-import { Input } from "./ui/Input";
-import { Label } from "./ui/Label";
+import InputGroup from "./Shared/InputGroup";
+import SwitchGroup from "./Shared/SwitchGroup";
+import ButtonGroup from "./Shared/ButtonGroup";
 import { RequestMessage } from "./ui/RequestMessage";
-import { Switch } from "./ui/Switch";
 
 /* Interfaces */
 import type { Role } from "../core/interfaces/Role.interface";
@@ -143,78 +140,43 @@ export default function RoleForm({ id }: Props) {
       <div className="max-w-md mx-auto">
         <form onSubmit={handleSubmit}>
           <div className="mx-auto max-w-xs space-y-2 my-6">
-            {" "}
-            <Label htmlFor="name">Ingresa el nombre</Label>{" "}
-            <Input
-              placeholder="Ingresa el nombre"
-              id="name"
+            <InputGroup
+              label="Ingresa el nombre"
               name="name"
-              type="text"
               value={name}
               disabled={requestStatus === "loading"}
               readOnly={statusMode === "detail"}
               onChange={(e) => setName(e.target.value)}
               onBlur={validateName}
-            />{" "}
-            <ErrorInputMessage
-              errorMessage="El nombre del Rol es obligatorio"
+              errorMessage="El nombre del rol es obligatorio"
               errorStatus={errorName}
             />
           </div>
 
-          <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-            {" "}
-            <Switch
-              id="isAdmin"
-              checked={isAdmin}
-              onCheckedChange={setIsAdmin}
-              disabled={statusMode === "detail"}
-            />{" "}
-            <Label htmlFor="activateUser">
-              Establecer usuario administrativo
-            </Label>{" "}
-          </div>
+          <SwitchGroup
+            label="Establecer usuario administrativo"
+            name="isAdmin"
+            checked={isAdmin}
+            onCheckedChange={setIsAdmin}
+            disabled={statusMode === "detail"}
+          />
 
           {statusMode !== "create" && (
-            <div className="flex items-center justify-center gap-2 my-6 md:py-3">
-              {" "}
-              <Switch
-                id="activateUser"
-                checked={active}
-                onCheckedChange={setActive}
-                disabled={statusMode === "detail"}
-              />{" "}
-              <Label htmlFor="activateUser">Activar / Desactivar Role</Label>{" "}
-            </div>
+            <SwitchGroup
+              label="Activar / Desactivar Role"
+              name="activeRol"
+              checked={active}
+              onCheckedChange={setActive}
+              disabled={statusMode === "detail"}
+            />
           )}
 
-          <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
-            {statusMode === "detail" ? (
-              <Button type="button" className="w-full" onClick={changeEdit}>
-                Editar
-              </Button>
-            ) : (
-              <Button type="submit" className="w-full">
-                Guardar
-              </Button>
-            )}
-            {statusMode === "edit" ? (
-              <Button
-                type="button"
-                className="w-full"
-                variant="light"
-                onClick={cancel}
-              >
-                Cancelar
-              </Button>
-            ) : (
-              <Link href="/roles" className="w-full">
-                <Button type="button" className="w-full" variant="light">
-                  Volver
-                </Button>
-              </Link>
-            )}
-          </div>
+          <ButtonGroup
+            statusMode={statusMode}
+            changeEdit={changeEdit}
+            cancel={cancel}
+            url="/roles"
+          />
         </form>
       </div>
       <RequestMessage
