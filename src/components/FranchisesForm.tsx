@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { Button } from "./ui/Button";
 import { ErrorInputMessage } from "./ui/ErrorInputMessage";
 /* Components */
+import InputGroup from "./Shared/InputGroup";
 import { Input } from "./ui/Input";
 import { Label } from "./ui/Label";
 import { RequestMessage } from "./ui/RequestMessage";
@@ -141,20 +142,14 @@ export default function FranchisesForm({ id }: Props) {
       <div className="max-w-md mx-auto">
         <form onSubmit={handleSubmit}>
           <div className="mx-auto max-w-xs space-y-2 my-6">
-            {" "}
-            <Label htmlFor="name">Ingresa el nombre</Label>{" "}
-            <Input
-              placeholder="Ingresa el nombre"
-              id="name"
+            <InputGroup
+              label="Ingresa el nombre"
               name="name"
-              type="text"
               value={name}
               disabled={requestStatus === "loading"}
               readOnly={statusMode === "detail"}
               onChange={(e) => setName(e.target.value)}
               onBlur={validateName}
-            />{" "}
-            <ErrorInputMessage
               errorMessage="El nombre de la franquicia es obligatorio"
               errorStatus={errorName}
             />
