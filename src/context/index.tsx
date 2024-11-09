@@ -42,7 +42,7 @@ export const AppProvider = ({ children }: Props) => {
     setIsAuthenticated(false);
   };
 
-  const verirySession = async () => {
+  const verifySession = async () => {
     setIsLoadingSession(true);
     try {
       const res = await AuthService.verifySession();
@@ -62,7 +62,7 @@ export const AppProvider = ({ children }: Props) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    verirySession();
+    verifySession();
   }, []);
 
   return (

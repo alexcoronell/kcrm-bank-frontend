@@ -33,7 +33,7 @@ export default function LoginForm() {
 
   const [password, setPassword] = useState("12345678");
   const [errorPassword, setErrorPassword] = useState(false);
-  const [errorPasswordMessage, setErrorPasswordMessage] = useState("");
+  const [errorPasswordMessage] = useState("La contraseña no puede estar vacía");
 
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
 
@@ -75,8 +75,8 @@ export default function LoginForm() {
       };
       const { data } = await AuthService.login(dto);
       navigate("/dashboard");
-      const { isAdmin, publicUser } = data;
-      context.login(publicUser, isAdmin);
+      const { isAdmin, user } = data;
+      context.login(user, isAdmin);
     } catch (e) {
       const { status } = e as Responses;
       setRequestStatus("failed");
