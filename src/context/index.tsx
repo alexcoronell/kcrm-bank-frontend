@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useState, useEffect } from "react";
 import { navigate } from "wouter/use-browser-location";
 import { useLocation } from "wouter";
@@ -53,6 +54,7 @@ export const AppProvider = ({ children }: Props) => {
       if (location === "/login" || location === "/" || location === "")
         navigate("/dashboard");
     } catch (e) {
+      console.error(e)
       logout();
       navigate("/login");
     } finally {

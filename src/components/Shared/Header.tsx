@@ -1,6 +1,5 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { navigate } from "wouter/use-browser-location";
-import { useLocation } from "wouter";
 
 /* Components */
 import { Button } from "../ui/Button";
@@ -12,27 +11,6 @@ import AuthService from "../../core/services/auth.service";
 
 export default function Header() {
   const context = useContext(AppContext);
-  const [location] = useLocation();
-
-  useEffect(() => {
-    verifySession();
-  }, []);
-
-
-  const verifySession = async () => {
-    AuthService.verifySession()
-      .then((res) => {
-        const {
-          data: { publicUser, isAdmin },
-        } = res;
-        context.login(publicUser, isAdmin);
-        if (location === "/login") navigate("/dashboard");
-      })
-      .catch((e) => {
-        console.error(e);
-        navigate("/login");
-      });
-  };
 
   const logout = async () => {
     try {
