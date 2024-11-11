@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 
 /* Components */
@@ -100,6 +101,18 @@ export default function ProductsForm({ id }: Props) {
     setName("");
   };
 
+  const handleRateRequired = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const status: boolean = e as unknown as boolean
+    if(status && franchiseRequired) setFranchiseRequired(false)
+    setRateRequired(status)
+  }
+
+  const handleFranquiseRequired = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const status: boolean = e as unknown as boolean
+    if(status && rateRequired) setRateRequired(false)
+    setFranchiseRequired(status)
+  }
+
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -165,15 +178,15 @@ export default function ProductsForm({ id }: Props) {
             label="Tasa requerida"
             name="rateRequired"
             checked={rateRequired}
-            onCheckedChange={setRateRequired}
+            onCheckedChange={handleRateRequired}
             disabled={statusMode === "detail"}
           />
 
           <SwitchGroup
-            label="Tasa requerida"
+            label="Franquicia requerida"
             name="franchiseRequired"
             checked={franchiseRequired}
-            onCheckedChange={setFranchiseRequired}
+            onCheckedChange={handleFranquiseRequired}
             disabled={statusMode === "detail"}
           />
 
