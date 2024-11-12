@@ -1,22 +1,13 @@
-import { useEffect, useState, useContext } from "react";
-import { Link } from "wouter";
+import React, { useEffect, useState, useContext } from "react";
 
-import { Button } from "./ui/Button";
+/* Components */
+import SelectGroup from "./Shared/SelectGroup";
+import InputGroup from "./Shared/InputGroup";
+import ButtonGroup from "./Shared/ButtonGroup";
 import { ErrorInputMessage } from "./ui/ErrorInputMessage";
 import { Input } from "./ui/Input";
 import { Label } from "./ui/Label";
 import { RequestMessage } from "./ui/RequestMessage";
-
-/* Components */
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/Select";
-import { Switch } from "./ui/Switch";
-import SelectItemAlternative from "./Shared/SelectItemAlternative";
 
 /* Context */
 import { AppContext } from "../context";
@@ -37,17 +28,20 @@ import type { StatusMode } from "../core/types/StatusMode.type";
 import SaleService from "../core/services/sale.service";
 import FranchiseService from "../core/services/franchise.service";
 import ProductService from "../core/services/product.service";
-import { RiCloseLargeFill } from "@remixicon/react";
+import { User } from "../core/interfaces/User.interface";
 
-export default function SalesForm() {
+interface Props {
+  id: Sale["id"] | null;
+}
+
+export default function SalesForm({ id }: Props) {
   const context = useContext(AppContext);
   const [franchices, setFranchices] = useState<Franchise[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [statusMode, setStatusMode] = useState<StatusMode>("create");
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
+
   const [requestStatusProducts, setRequestStatusProducts] =
-    useState<RequestStatus>("init");
-  const [requestStatusFranchises, setRequestStatusFranchises] =
     useState<RequestStatus>("init");
   const [requestMessage, setRequestMessage] = useState<string>("");
   const [showRequestMessage, setShowRequestMessage] = useState<boolean>(false);
@@ -56,6 +50,8 @@ export default function SalesForm() {
   const [errorProduct, setErrorProduct] = useState(false);
 
   const [franchise, setFranchise] = useState<Franchise | null>(null);
+  const [requestStatusFranchises, setRequestStatusFranchises] =
+    useState<RequestStatus>("init");
   const [errorFranchise, setErrorFranchise] = useState(false);
 
   const [quotaRequested, setQuotaRequested] = useState(0);
@@ -98,12 +94,44 @@ export default function SalesForm() {
     }
   };
 
-  const validateRate = () => {};
+  const validateProduct = () => {
+    if (product === null) {
+      setErrorProduct(true);
+    } else {
+      setErrorProduct(false);
+    }
+  };
+
+  const validateFranchise = () => {
+    if (product?.franchiseRequired && franchise == null) {
+      setErrorFranchise(true);
+    } else {
+      setErrorFranchise(false);
+    }
+  };
+
+  const validateRate = () => {
+    if ((product?.rateRequired && rate === 0) || rate === null) {
+      setErrorRate(true);
+    } else {
+      setErrorRate(false);
+    }
+  };
+
+  const validateQuotaRequested = () => {
+    if (quotaRequested <= 100) {
+      setErrorQuotaRequested(true);
+    } else {
+      setErrorQuotaRequested(false);
+    }
+  };
 
   const handleChangeProduct = (e: React.HTMLInputTypeAttribute) => {
     const id = Number.parseInt(e);
     const productId = products.findIndex((item) => item.id === id);
     setProduct(products[productId]);
+    if (product?.franchiseRequired) setRate(0);
+    if (product?.rateRequired) setFranchise(null);
   };
 
   const handleChangeFranchise = (e: React.HTMLInputTypeAttribute) => {
@@ -138,108 +166,102 @@ export default function SalesForm() {
     setErrorQuotaRequested(false);
   };
 
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    event.preventDefault();
+    setRequestStatus("loading");
+    validateProduct();
+    validateFranchise();
+    validateRate();
+    if (errorProduct || errorFranchise || errorRate || errorQuotaRequested)
+      return;
+    try {
+      if (statusMode === "create") {
+        const dto: CreateSaleDto = {
+          product: product?.id as Product["id"],
+          franchise: product?.franchiseRequired
+            ? (franchise?.id as number)
+            : null,
+          rate: product?.rateRequired ? rate : null,
+          quotaRequested,
+          createdBy: context?.currentUser?.id as User["id"],
+        };
+        await SaleService.save(dto);
+        setRequestMessage("La venta fue salvada correctamente");
+        clean();
+      } else {
+        const dto: UpdateSaleDto = {
+          product: product?.id as Product["id"],
+          franchise: product?.franchiseRequired
+            ? (franchise?.id as number)
+            : null,
+          rate: product?.rateRequired ? rate : null,
+          quotaRequested,
+          updatedBy: context?.currentUser?.id as User["id"],
+        };
+        await SaleService.update(id as number, dto);
+        setRequestMessage("La venta fue actualizada correctamente");
+        setStatusMode("detail");
+      }
+      setRequestStatus("success");
+    } catch (e) {
+      console.error(e);
+      setRequestMessage("La vemta no pudo ser salvada");
+      setRequestStatus("failed");
+    } finally {
+      setShowRequestMessage(true);
+      setTimeout(() => setShowRequestMessage(false), 5000);
+    }
+  };
+
   return (
     <>
       <div className="SalesForm max-w-[800px] mx-auto">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="md:grid md:grid-cols-2 md:gap-x-3">
             {/* Products */}
-            <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-              <Label htmlFor="roleId">Producto</Label>{" "}
-              <Select
-                onValueChange={handleChangeProduct}
-                value={product?.id.toString()}
-              >
-                {" "}
-                <SelectTrigger id="product" className="mt-2">
-                  {" "}
-                  <SelectValue placeholder="Select" />{" "}
-                </SelectTrigger>{" "}
-                <SelectContent>
-                  {products.length > 0 &&
-                  requestStatusProducts === "success" ? (
-                    <>
-                      {" "}
-                      {products.map((item, index) => (
-                        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                        <SelectItem key={index} value={item.id.toString()}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </>
-                  ) : (
-                    <SelectItemAlternative
-                      total={products.length}
-                      status={requestStatusProducts}
-                    />
-                  )}
-                </SelectContent>
-              </Select>
-              <ErrorInputMessage
-                errorMessage={"El Producto es obligatorio"}
-                errorStatus={errorProduct}
-              />
-            </div>
+            <SelectGroup
+              label="Producto"
+              name="product"
+              onValueChange={handleChangeProduct}
+              value={product?.id.toString() as string}
+              items={products}
+              itemsRequestStatus={requestStatusProducts}
+              errorMessage="El producto es requerido"
+              errorStatus={errorProduct}
+              onBlur={validateProduct}
+            />
 
             {/* Franchises */}
             {product?.franchiseRequired && (
-              <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-                <Label htmlFor="roleId">Franquicia</Label>{" "}
-                <Select
-                  onValueChange={handleChangeFranchise}
-                  value={franchise?.id.toString()}
-                >
-                  {" "}
-                  <SelectTrigger id="product" className="mt-2">
-                    {" "}
-                    <SelectValue placeholder="Select" />{" "}
-                  </SelectTrigger>{" "}
-                  <SelectContent>
-                    {franchices.length > 0 &&
-                    requestStatusFranchises === "success" ? (
-                      <>
-                        {" "}
-                        {franchices.map((item, index) => (
-                          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                          <SelectItem key={index} value={item.id.toString()}>
-                            {item.name}
-                          </SelectItem>
-                        ))}
-                      </>
-                    ) : (
-                      <SelectItemAlternative
-                        total={franchices.length}
-                        status={requestStatusFranchises}
-                      />
-                    )}
-                  </SelectContent>
-                </Select>
-                <ErrorInputMessage
-                  errorMessage={"La Franquicia es obligatoria"}
-                  errorStatus={errorFranchise}
-                />
-              </div>
+              <SelectGroup
+                label="Franquicia"
+                name="franchise"
+                onValueChange={handleChangeFranchise}
+                value={franchise?.id.toString() as string}
+                items={franchices}
+                itemsRequestStatus={requestStatusFranchises}
+                errorMessage="La fraquicia es requerida"
+                errorStatus={errorFranchise}
+                onBlur={validateFranchise}
+              />
             )}
 
             {/* Rate */}
             {product?.rateRequired && (
               <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-                {" "}
-                <Label htmlFor="rate">Tasa</Label>{" "}
-                <Input
-                  placeholder="Ingresa la tasa"
-                  id="rate"
+                <InputGroup
+                  label="Tasa"
                   name="rate"
                   type="number"
-                  value={rate}
+                  value={rate.toString()}
                   disabled={requestStatus === "loading"}
                   readOnly={statusMode === "detail"}
                   onChange={(e) => setRate(Number.parseInt(e.target.value))}
                   onBlur={validateRate}
-                />{" "}
-                <ErrorInputMessage
-                  errorMessage={"La tasa es obligatoria"}
                   errorStatus={errorRate}
+                  errorMessage="La Tasa es requerida"
                 />
               </div>
             )}
@@ -259,25 +281,20 @@ export default function SalesForm() {
           <div className="md:grid md:grid-cols-2 md:gap-x-3">
             {/* Quota Requested */}
             <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
-              {" "}
-              <Label htmlFor="quotaRequested">Cupo solicitado</Label>{" "}
-              <Input
-                placeholder="Ingresa el cupo solicitado"
-                id="quotaRequested"
+              <InputGroup
+                label="Cupo Solicitado"
                 name="quotaRequested"
                 type="number"
-                value={rate}
+                value={quotaRequested.toString()}
                 disabled={requestStatus === "loading"}
                 readOnly={statusMode === "detail"}
-                onChange={(e) => setRate(Number.parseInt(e.target.value))}
-                onBlur={validateRate}
-              />{" "}
-              <ErrorInputMessage
+                onChange={(e) => setQuotaRequested(Number.parseInt(e.target.value))}
+                onBlur={validateQuotaRequested}
                 errorMessage={"El cupo solicitado es obligatorio"}
                 errorStatus={errorQuotaRequested}
               />
             </div>
-            {/* Quota Requested */}
+            {/* Current User */}
             <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
               {" "}
               <Label htmlFor="currentUser">Creado por</Label>{" "}
@@ -295,33 +312,12 @@ export default function SalesForm() {
             </div>
           </div>
 
-          <div className="mx-auto max-w-xs my-6 grid grid-cols-2 gap-x-3">
-            {statusMode === "detail" ? (
-              <Button type="button" className="w-full" onClick={changeEdit}>
-                Editar
-              </Button>
-            ) : (
-              <Button type="submit" className="w-full">
-                Guardar
-              </Button>
-            )}
-            {statusMode === "edit" ? (
-              <Button
-                type="button"
-                className="w-full"
-                variant="light"
-                onClick={cancel}
-              >
-                Cancelar
-              </Button>
-            ) : (
-              <Link href="/sales" className="w-full">
-                <Button type="button" className="w-full" variant="light">
-                  Volver
-                </Button>
-              </Link>
-            )}
-          </div>
+          <ButtonGroup
+            statusMode={statusMode}
+            changeEdit={changeEdit}
+            cancel={cancel}
+            url="/sales"
+          />
         </form>
       </div>
       <RequestMessage

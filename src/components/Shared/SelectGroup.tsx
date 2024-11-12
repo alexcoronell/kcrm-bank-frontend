@@ -8,6 +8,8 @@ import SelectItemAlternative from "./SelectItemAlternative";
 import { ErrorInputMessage } from "../ui/ErrorInputMessage";
 
 import type { Role } from "../../core/interfaces/Role.interface";
+import type { Product } from "../../core/interfaces/Product.interface";
+import type { Franchise } from "../../core/interfaces/Franchise.interface";
 
 import type { RequestStatus } from "../../core/types/RequestStatus.type";
 
@@ -15,8 +17,9 @@ interface Props {
   label: string;
   name: string;
   onValueChange: (event: string) => void;
+  onBlur?: () => void;
   value: string;
-  items: Role[];
+  items: Role[] | Product[] | Franchise[];
   itemsRequestStatus: RequestStatus;
   errorMessage?: string;
   errorStatus?: boolean;
@@ -27,6 +30,7 @@ export default function SelectGroup({
   name,
   value,
   onValueChange,
+  onBlur,
   items = [],
   itemsRequestStatus = "init",
   errorMessage = "",
@@ -41,7 +45,7 @@ export default function SelectGroup({
           {" "}
           <SelectValue placeholder="Select" />{" "}
         </SelectTrigger>{" "}
-        <SelectContent>
+        <SelectContent onBlur={onBlur}>
           {items.length > 0 && itemsRequestStatus === "success" ? (
             <>
               {" "}
