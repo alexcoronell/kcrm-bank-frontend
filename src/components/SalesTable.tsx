@@ -46,11 +46,11 @@ export function SalesTable() {
 		"Producto",
 		"Cuota solicitada",
 		"Tasa",
+		"Franquicia",
 		"Creado",
 		"Creado por",
 		"Actualizado",
 		"Actualizado por",
-		"Activo",
 	];
 	const columns = titleColums.length + 2;
 	useEffect(() => {
@@ -70,7 +70,6 @@ export function SalesTable() {
 			setSales(items);
 			setTotal(count);
 			setTotalPages(Math.ceil(total / limit));
-			console.log(items);
 		} catch (e) {
 			setRequestStatus("failed");
 		}
@@ -83,7 +82,6 @@ export function SalesTable() {
 	const handleDelete = async (id: Sale["id"]) => {
 		try {
 			const response = await SaleService.delete(id);
-			console.log(response);
 			fetchData(page, limit);
 		} catch (e) {
 			setRequestStatus("failed");
@@ -156,7 +154,9 @@ export function SalesTable() {
 								<TableRow key={item.id}>
 									<TableCell>{item.id}</TableCell>
 									<TableCell>{item.product.name}</TableCell>
-									<TableCell>{item.rate ? "Sí" : "No"}</TableCell>
+									<TableCell>{item.quotaRequested}</TableCell>
+									<TableCell>{item.product.rateRequired  ? item.rate : "N/A"}</TableCell>
+									<TableCell>{item.product.franchiseRequired  ? item.franchise?.name : "N/A"}</TableCell>
 									<TableCell>{formatDateTime(item.createAt)}</TableCell>
 									<TableCell>{item.createdBy.name}</TableCell>
 									<TableCell>{formatDateTime(item.updateAt)}</TableCell>

@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
+
+import { useEffect, useState, useContext } from "react";
 
 /* Components */
 import SelectGroup from "./Shared/SelectGroup";
@@ -13,12 +14,12 @@ import { RequestMessage } from "./ui/RequestMessage";
 import { AppContext } from "../context";
 
 /* Interfaces */
-import { Sale } from "../core/interfaces/Sale.interface";
+import type { Sale } from "../core/interfaces/Sale.interface";
 import type { Franchise } from "../core/interfaces/Franchise.interface";
 import type { Product } from "../core/interfaces/Product.interface";
 
 /* DTO's */
-import { CreateSaleDto, UpdateSaleDto } from "../core/dtos/Sale.dto";
+import type { CreateSaleDto, UpdateSaleDto } from "../core/dtos/Sale.dto";
 
 /* Types */
 import type { RequestStatus } from "../core/types/RequestStatus.type";
@@ -28,7 +29,7 @@ import type { StatusMode } from "../core/types/StatusMode.type";
 import SaleService from "../core/services/sale.service";
 import FranchiseService from "../core/services/franchise.service";
 import ProductService from "../core/services/product.service";
-import { User } from "../core/interfaces/User.interface";
+import type { User } from "../core/interfaces/User.interface";
 
 interface Props {
   id: Sale["id"] | null;
@@ -170,12 +171,14 @@ export default function SalesForm({ id }: Props) {
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
-    setRequestStatus("loading");
     validateProduct();
     validateFranchise();
     validateRate();
+    validateQuotaRequested()
     if (errorProduct || errorFranchise || errorRate || errorQuotaRequested)
       return;
+    console.log("Seguí");
+    setRequestStatus("loading");
     try {
       if (statusMode === "create") {
         const dto: CreateSaleDto = {

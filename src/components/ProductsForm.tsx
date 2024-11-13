@@ -119,6 +119,7 @@ export default function ProductsForm({ id }: Props) {
     e.preventDefault();
     validateName();
     if (errorName || statusMode === "detail") return;
+    setRequestStatus("loading")
     try {
       if (statusMode === "create") {
         const dto: CreateProductDto = {
@@ -138,6 +139,7 @@ export default function ProductsForm({ id }: Props) {
         };
         await ProductService.update(id as number, dto);
         setRequestMessage("Producto actualizado correctamente");
+        setRequestStatus("success")
         setStatusMode("detail");
       }
       setRequestStatus("success");
