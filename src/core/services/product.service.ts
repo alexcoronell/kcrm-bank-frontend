@@ -17,24 +17,24 @@ export default class ProductService {
   };
 
   static getAll = async (page = 1, limit = 10) => {
-    return await axios.get(`${url}?page=${page}&limit=${limit}`);
-  };
-
-  static count = async () => {
-    return await axios.get(`${url}/count`);
-  };
-
-  static get = async (id: Product["id"]) => {
-    return await axios.get(`${url}/${id}`);
-  };
-
-  static update = async (id: Product["id"], dto: UpdateProductDto) => {
-    return await axios.put(`${url}/${id}`, dto, {
-      headers: { "Content-Type": "application/json" },
+    return await axios.get(`${url}?page=${page}&limit=${limit}`, {
+      withCredentials: true,
     });
   };
 
+  static count = async () => {
+    return await axios.get(`${url}/count`, { withCredentials: true });
+  };
+
+  static get = async (id: Product["id"]) => {
+    return await axios.get(`${url}/${id}`, { withCredentials: true });
+  };
+
+  static update = async (id: Product["id"], dto: UpdateProductDto) => {
+    return await axios.put(`${url}/${id}`, dto, { withCredentials: true });
+  };
+
   static delete = async (id: Product["id"]) => {
-    return await axios.delete(`${url}/${id}`);
+    return await axios.delete(`${url}/${id}`, { withCredentials: true });
   };
 }
