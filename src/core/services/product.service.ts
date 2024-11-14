@@ -11,9 +11,7 @@ import type { CreateProductDto, UpdateProductDto } from "../dtos/Product.dto";
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export default class ProductService {
   static save = async (dto: CreateProductDto) => {
-    return await axios.post(url, dto, {
-      headers: { "Content-Type": "application/json" },
-    });
+    return await axios.post(url, dto, { withCredentials: true });
   };
 
   static getAll = async (page = 1, limit = 10) => {
