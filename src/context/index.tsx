@@ -10,15 +10,23 @@ export const AppContext = createContext<{
   isAuthenticated: boolean;
   isAdmin: boolean;
   isLoadingSession: boolean;
+  confirmDeleteMessage: boolean;
+  itemToDelete: number | null;
   login: (user: User, isAdmin: boolean) => void;
   logout: () => void;
+  showConfirmDeleteMessage: (id: number) => void;
+  hideConfirmDeleteMessage: () => void;
 }>({
   currentUser: null,
   isAuthenticated: false,
   isAdmin: false,
   isLoadingSession: false,
+  confirmDeleteMessage: false,
+  itemToDelete: null,
   login: () => {},
   logout: () => {},
+  showConfirmDeleteMessage: () => {},
+  hideConfirmDeleteMessage: () => {},
 });
 
 interface Props {
@@ -30,6 +38,8 @@ export const AppProvider = ({ children }: Props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoadingSession, setIsLoadingSession] = useState(false);
+  const [confirmDeleteMessage, setConfirmDeleteMessage] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<number | null>(null);
 
   const login = (user: User, isAdmin: boolean) => {
     setCurrentUser(user);
@@ -43,6 +53,16 @@ export const AppProvider = ({ children }: Props) => {
     setIsAuthenticated(false);
   };
 
+  const showConfirmDeleteMessage = (id: number) => {
+    setItemToDelete(id);
+    setConfirmDeleteMessage(true);
+  };
+
+  const hideConfirmDeleteMessage = () => {
+    setItemToDelete(null);
+    setConfirmDeleteMessage(false);
+  };
+
   const verifySession = async () => {
     setIsLoadingSession(true);
     try {
@@ -54,7 +74,7 @@ export const AppProvider = ({ children }: Props) => {
       if (location === "/login" || location === "/" || location === "")
         navigate("/dashboard");
     } catch (e) {
-      console.error(e)
+      console.error(e);
       logout();
       navigate("/login");
     } finally {
@@ -74,8 +94,12 @@ export const AppProvider = ({ children }: Props) => {
         isAuthenticated,
         isAdmin,
         isLoadingSession,
+        confirmDeleteMessage,
+        itemToDelete,
+        showConfirmDeleteMessage,
         login,
         logout,
+        hideConfirmDeleteMessage,
       }}
     >
       {children}

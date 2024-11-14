@@ -11,9 +11,7 @@ import type { Franchise } from "../interfaces/Franchise.interface";
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export default class FranchiseService {
   static save = async (dto: CreateFranchiseDto) => {
-    return await axios.post(url, dto, {
-      headers: { "Content-Type": "application/json" },
-    });
+    return await axios.post(url, dto, { withCredentials: true });
   };
 
   static getAll = async (page = 1, limit = 10) => {
