@@ -250,7 +250,7 @@ export function RolesTable() {
         </Table>
       </TableRoot>
       <ConfirmDeleteMessage
-        message="¿Realmente desea eliminar la francquicia?"
+        message="¿Realmente desea eliminar el rol?"
         onClick={handleDelete}
       />
       <RequestMessage

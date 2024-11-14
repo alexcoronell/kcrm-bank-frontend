@@ -227,7 +227,7 @@ export default function ProductsTable() {
         </Table>
       </TableRoot>
       <ConfirmDeleteMessage
-        message="¿Realmente desea eliminar la francquicia?"
+        message="¿Realmente desea eliminar el producto?"
         onClick={handleDelete}
       />
       <RequestMessage
