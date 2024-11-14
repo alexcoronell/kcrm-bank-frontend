@@ -11,9 +11,7 @@ import type { CreateRoleDto, UpdateRoleDto } from "../dtos/Role.dto";
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export default class RoleService {
   static save = async (dto: CreateRoleDto) => {
-    return await axios.post(url, dto, {
-      headers: { "Content-Type": "application/json" },
-    });
+    return await axios.post(url, dto, { withCredentials: true });
   };
 
   static getAll = async (page = 1, limit = 10) => {
