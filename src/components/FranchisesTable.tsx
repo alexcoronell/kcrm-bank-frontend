@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useContext } from "react";
 import { Link } from "wouter";
 
@@ -28,6 +29,7 @@ import TableHeadComponent from "./Shared/TableHeadComponent";
 import TableRowAlternative from "./Shared/TableRowAlternative";
 import TableRowTotal from "./Shared/TableRowTotal";
 import ConfirmDeleteMessage from "./Shared/ConfirmDeleteMessage";
+import TablePagination from "./Shared/TablePagination";
 import { RequestMessage } from "./ui/RequestMessage";
 
 /* Interfaces */
@@ -71,6 +73,7 @@ export function FranchisesTable() {
       setTotal(count);
       setTotalPages(Math.ceil(total / limit));
     } catch (e) {
+      console.error(e);
       setRequestStatus("failed");
     }
   };
@@ -182,44 +185,15 @@ export function FranchisesTable() {
           </TableBody>
 
           <TableFoot>
-            <TableRow>
-              <TableCell colSpan={columns} className="text-center">
-                <Button
-                  variant="ghost"
-                  className="mx-1"
-                  disabled={page === 1}
-                  onClick={() => setPage(1)}
-                >
-                  Primera
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="mx-1"
-                  disabled={page === 1}
-                  onClick={prevPage}
-                >
-                  Anterior
-                </Button>
-                <p className="mx-3 inline">{page}</p>
-                <Button
-                  variant="ghost"
-                  className="mx-1"
-                  onClick={nextPage}
-                  disabled={page === totalPages}
-                >
-                  Siguiente
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="mx-1"
-                  onClick={() => setPage(totalPages)}
-                  disabled={page === totalPages}
-                >
-                  Ultima
-                </Button>
-              </TableCell>
-            </TableRow>
-
+            <TablePagination
+              columns={columns}
+              page={page}
+              limit={limit}
+              totalItems={total}
+              prevPage={prevPage}
+              nextPage={nextPage}
+              setPage={setPage}
+            />
             <TableRowTotal columns={columns} total={total} />
           </TableFoot>
         </Table>
