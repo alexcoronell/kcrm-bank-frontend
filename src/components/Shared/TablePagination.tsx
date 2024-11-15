@@ -54,7 +54,7 @@ export default function TablePagination({
           variant="ghost"
           className="mx-1"
           onClick={nextPage}
-          disabled={page === totalPages}
+          disabled={page === totalPages || totalItems === 0}
         >
           Siguiente
         </Button>
@@ -62,7 +62,7 @@ export default function TablePagination({
           variant="ghost"
           className="mx-1"
           onClick={() => setPage(totalPages)}
-          disabled={page === totalPages}
+          disabled={page === totalPages || totalItems === 0}
         >
           Ultima
         </Button>

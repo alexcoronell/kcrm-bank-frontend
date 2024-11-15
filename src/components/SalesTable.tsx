@@ -30,6 +30,7 @@ import TableRowAlternative from "./Shared/TableRowAlternative";
 import TableRowTotal from "./Shared/TableRowTotal";
 import ConfirmDeleteMessage from "./Shared/ConfirmDeleteMessage";
 import { RequestMessage } from "./ui/RequestMessage";
+import TablePagination from "./Shared/TablePagination";
 
 /* Interfaces */
 import type { Sale } from "../core/interfaces/Sale.interface";
@@ -139,121 +140,95 @@ export function SalesTable() {
 
   return (
     <>
-	<TableRoot>
-      <div className="flex items-center justify-end px-3">
-        <div className="inline-grid grid-cols-2 items-center gap-x-3">
-          <Label htmlFor="size">Items por página</Label>{" "}
-          <Select
-            onValueChange={handleChangeLimit}
-            value={limit.toString()}
-            disabled={total < 5}
-          >
-            {" "}
-            <SelectTrigger id="size" className="mt-2">
+      <TableRoot>
+        <div className="flex items-center justify-end px-3">
+          <div className="inline-grid grid-cols-2 items-center gap-x-3">
+            <Label htmlFor="size">Items por página</Label>{" "}
+            <Select
+              onValueChange={handleChangeLimit}
+              value={limit.toString()}
+              disabled={total < 5}
+            >
               {" "}
-              <SelectValue placeholder="Select" />{" "}
-            </SelectTrigger>{" "}
-            <SelectContent>
-              {" "}
-              <SelectItem value="5">5</SelectItem>
-              <SelectItem value="10">10</SelectItem>
-              {total > 25 && <SelectItem value="25">25</SelectItem>}
-              {total > 50 && <SelectItem value="50">50</SelectItem>}
-              {total > 100 && <SelectItem value="100">100</SelectItem>}{" "}
-            </SelectContent>{" "}
-          </Select>
+              <SelectTrigger id="size" className="mt-2">
+                {" "}
+                <SelectValue placeholder="Select" />{" "}
+              </SelectTrigger>{" "}
+              <SelectContent>
+                {" "}
+                <SelectItem value="5">5</SelectItem>
+                <SelectItem value="10">10</SelectItem>
+                {total > 25 && <SelectItem value="25">25</SelectItem>}
+                {total > 50 && <SelectItem value="50">50</SelectItem>}
+                {total > 100 && <SelectItem value="100">100</SelectItem>}{" "}
+              </SelectContent>{" "}
+            </Select>
+          </div>
         </div>
-      </div>
-      <Table>
-        <TableHeadComponent titleColumns={titleColums} />
-        <TableBody>
-          {total > 0 && requestStatus !== "loading" ? (
-            <>
-              {sales.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.product.name}</TableCell>
-                  <TableCell>{item.quotaRequested}</TableCell>
-                  <TableCell>
-                    {item.product.rateRequired ? item.rate : "N/A"}
-                  </TableCell>
-                  <TableCell>
-                    {item.product.franchiseRequired
-                      ? item.franchise?.name
-                      : "N/A"}
-                  </TableCell>
-                  <TableCell>{formatDateTime(item.createAt)}</TableCell>
-                  <TableCell>{item.createdBy.name}</TableCell>
-                  <TableCell>{formatDateTime(item.updateAt)}</TableCell>
-                  <TableCell>{item.updatedBy.name}</TableCell>
-                  <TableCell className="action-buttons">
-                    <Link href={`/sales/detail/${item.id}`}>
-                      <Button variant="light">
-                        <EyeIcon classes="size-3" />
+        <Table>
+          <TableHeadComponent titleColumns={titleColums} />
+          <TableBody>
+            {total > 0 && requestStatus !== "loading" ? (
+              <>
+                {sales.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>{item.product.name}</TableCell>
+                    <TableCell>{item.quotaRequested}</TableCell>
+                    <TableCell>
+                      {item.product.rateRequired ? item.rate : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      {item.product.franchiseRequired
+                        ? item.franchise?.name
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell>{formatDateTime(item.createAt)}</TableCell>
+                    <TableCell>{item.createdBy.name}</TableCell>
+                    <TableCell>{formatDateTime(item.updateAt)}</TableCell>
+                    <TableCell>{item.updatedBy.name}</TableCell>
+                    <TableCell className="action-buttons">
+                      <Link href={`/sales/detail/${item.id}`}>
+                        <Button variant="light">
+                          <EyeIcon classes="size-3" />
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="destructive"
+                        onClick={() =>
+                          context.showConfirmDeleteMessage(item.id)
+                        }
+                      >
+                        <TrashIcon classes="size-3" />
                       </Button>
-                    </Link>
-                    <Button
-                      variant="destructive"
-                      onClick={() => context.showConfirmDeleteMessage(item.id)}
-                    >
-                      <TrashIcon classes="size-3" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </>
-          ) : (
-            <TableRowAlternative
-              itemLength={total}
-              requestStatus={requestStatus}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </>
+            ) : (
+              <TableRowAlternative
+                itemLength={total}
+                requestStatus={requestStatus}
+                columns={columns}
+              />
+            )}
+          </TableBody>
+          <TableFoot>
+            <TablePagination
               columns={columns}
+              page={page}
+              limit={limit}
+              totalItems={total}
+              prevPage={prevPage}
+              nextPage={nextPage}
+              setPage={setPage}
             />
-          )}
-        </TableBody>
-        <TableFoot>
-          <TableRow>
-            <TableCell colSpan={columns} className="text-center">
-              <Button
-                variant="ghost"
-                className="mx-1"
-                disabled={page === 1}
-                onClick={() => setPage(1)}
-              >
-                Primera
-              </Button>
-              <Button
-                variant="ghost"
-                className="mx-1"
-                disabled={page === 1}
-                onClick={prevPage}
-              >
-                Anterior
-              </Button>
-              <p className="mx-3 inline">{page}</p>
-              <Button
-                variant="ghost"
-                className="mx-1"
-                onClick={nextPage}
-                disabled={page === totalPages}
-              >
-                Siguiente
-              </Button>
-              <Button
-                variant="ghost"
-                className="mx-1"
-                onClick={() => setPage(totalPages)}
-                disabled={page === totalPages}
-              >
-                Ultima
-              </Button>
-            </TableCell>
-          </TableRow>
 
-          <TableRowTotal columns={columns} total={total} />
-        </TableFoot>
-      </Table>
-    </TableRoot>
-	<ConfirmDeleteMessage
+            <TableRowTotal columns={columns} total={total} />
+          </TableFoot>
+        </Table>
+      </TableRoot>
+      <ConfirmDeleteMessage
         message="¿Realmente desea eliminar la venta?"
         onClick={handleDelete}
       />
@@ -262,6 +237,6 @@ export function SalesTable() {
         status={requestStatus}
         showMessage={showRequestMessage}
       />
-	</>
+    </>
   );
 }
