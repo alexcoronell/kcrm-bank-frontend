@@ -75,6 +75,7 @@ export function UsersTable() {
       setTotal(count);
       setTotalPages(Math.ceil(total / limit));
     } catch (e) {
+			console.error(e)
       setRequestStatus("failed");
     }
   };
