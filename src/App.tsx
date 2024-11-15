@@ -3,9 +3,9 @@ import { Route, Router } from "wouter";
 import { AppProvider } from "./context";
 
 /* Components */
-import Header from "./components/Shared/Header";
+import Header from "./components/layouts/Header";
 import FranchisesFormPage from "./pages/private/FranchisesFormPage";
-import Footer from "./components/Shared/Footer";
+import Footer from "./components/layouts/Footer";
 
 /* Pages */
 import DashboardPage from "./pages/private/DashboardPage";
