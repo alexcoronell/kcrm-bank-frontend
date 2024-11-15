@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useContext } from "react";
 
 /* Components */
@@ -41,6 +40,7 @@ export default function SalesForm({ id }: Props) {
   const [products, setProducts] = useState<Product[]>([]);
   const [statusMode, setStatusMode] = useState<StatusMode>("create");
   const [requestStatus, setRequestStatus] = useState<RequestStatus>("init");
+  const [createdBy, setCreatedBy] = useState<User | null>(null);
 
   const [requestStatusProducts, setRequestStatusProducts] =
     useState<RequestStatus>("init");
@@ -61,10 +61,47 @@ export default function SalesForm({ id }: Props) {
   const [rate, setRate] = useState(0);
   const [errorRate, setErrorRate] = useState(false);
 
+  const get = async () => {
+    setRequestStatus("init");
+    try {
+      const { data } = await SaleService.get(id as number);
+      const { product, franchise, rate, quotaRequested, createdBy } =
+        data;
+      setProduct(product);
+      setRate(rate);
+      setFranchise(franchise);
+      setQuotaRequested(quotaRequested);
+      setCreatedBy(createdBy)
+    } catch (e) {
+      console.error(e);
+      setShowRequestMessage(true)
+      setRequestStatus("failed")
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      const { status } = e as any;
+      if(status === 404) {
+        setRequestMessage("La venta no existe")
+      } else if(status === 500) {
+        setRequestMessage(
+          "No se pudo descargar la información, intente más tarde"
+        );
+      } 
+    } finally {
+      setTimeout(() => setShowRequestMessage(false), 2000);
+    }
+  };
+
   useEffect(() => {
     getProducts();
     getFranchises();
   }, []);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (id) {
+      get();
+      setStatusMode("detail");
+    }
+  }, [id]);
 
   const getProducts = async () => {
     setRequestStatusProducts("loading");
@@ -88,7 +125,6 @@ export default function SalesForm({ id }: Props) {
       } = await FranchiseService.getAll();
       setFranchices(items);
       setRequestStatusFranchises("success");
-      console.log(items);
     } catch (e) {
       console.error(e);
       setRequestStatusFranchises("failed");
@@ -174,10 +210,9 @@ export default function SalesForm({ id }: Props) {
     validateProduct();
     validateFranchise();
     validateRate();
-    validateQuotaRequested()
+    validateQuotaRequested();
     if (errorProduct || errorFranchise || errorRate || errorQuotaRequested)
       return;
-    console.log("Seguí");
     setRequestStatus("loading");
     try {
       if (statusMode === "create") {
@@ -291,7 +326,9 @@ export default function SalesForm({ id }: Props) {
                 value={quotaRequested.toString()}
                 disabled={requestStatus === "loading"}
                 readOnly={statusMode === "detail"}
-                onChange={(e) => setQuotaRequested(Number.parseInt(e.target.value))}
+                onChange={(e) =>
+                  setQuotaRequested(Number.parseInt(e.target.value))
+                }
                 onBlur={validateQuotaRequested}
                 errorMessage={"El cupo solicitado es obligatorio"}
                 errorStatus={errorQuotaRequested}
@@ -301,17 +338,29 @@ export default function SalesForm({ id }: Props) {
             <div className="mx-auto max-md:max-w-xs md:w-full space-y-2 my-6 md:my-3">
               {" "}
               <Label htmlFor="currentUser">Creado por</Label>{" "}
-              <Input
-                id="currentUser"
-                name="currentUser"
-                type="text"
-                value={context.currentUser?.name}
-                readOnly
-              />{" "}
-              <ErrorInputMessage
-                errorMessage={"Error, no se ha cargado el usuario actual"}
-                errorStatus={!context.currentUser}
-              />
+              {statusMode === "create" ? (
+                <>
+                  <Input
+                    id="currentUser"
+                    name="currentUser"
+                    type="text"
+                    value={context.currentUser?.name}
+                    readOnly
+                  />{" "}
+                  <ErrorInputMessage
+                    errorMessage={"Error, no se ha cargado el usuario actual"}
+                    errorStatus={!context.currentUser}
+                  />
+                </>
+              ) : (
+                <Input
+                  id="createdBy"
+                  name="createdBy"
+                  type="text"
+                  value={createdBy?.name}
+                  readOnly
+                />
+              )}
             </div>
           </div>
 

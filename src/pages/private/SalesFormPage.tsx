@@ -11,16 +11,18 @@ export default function SalesFormPage() {
 	const [titlePage, setTitlePage] = useState("Detalle de Venta");
 	const params = useParams();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
+		console.log(params.id);
 		if (params.id) {
 			setCurrentId(Number.parseInt(params.id));
 		} else {
-			setTitlePage("Crear Tipo de Usuario");
+			setTitlePage("Crear Venta");
 		}
 	}, []);
 
 	return (
-		<Page titlePage="Crear Venta">
+		<Page titlePage={titlePage}>
 			<SalesForm id={currentId} />
 		</Page>
 	);

@@ -42,7 +42,7 @@ function App() {
 					<Route path="/products/detail/:id" component={ProductsFormPage} />
 					<Route path="/sales" component={SalesPage} />
 					<Route path="/sales/create" component={SalesFormPage} />
-					<Route path="/sales/detail/:ID" component={SalesFormPage} />
+					<Route path="/sales/detail/:id" component={SalesFormPage} />
 					<Route path="/users" component={UsersPage} />
 					<Route path="/users/create" component={UsersFormPage} />
 					<Route path="/users/detail/:id" component={UsersFormPage} />
